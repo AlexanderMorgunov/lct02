@@ -1,14 +1,12 @@
 "use client";
 
-import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
 import { AdminPageLayout } from "@/fsd/widgets/AdminPage/AdminPageLayout/AdminPageLayout";
+import { UserList } from "@/fsd/widgets/AdminPage/AdminPageUsersList/AdminPageUsersList";
 
 export const AdminPage = () => {
-  const { theme, toggleTheme } = useThemeStore();
-
   return (
-    <AdminPageLayout theme={theme} toggleTheme={toggleTheme}>
-      Content
+    <AdminPageLayout>
+      <UserList />
     </AdminPageLayout>
   );
 };

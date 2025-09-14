@@ -4,7 +4,7 @@ import "../fsd/app/styles/global.css";
 import "@ant-design/v5-patch-for-react-19";
 import { cookies } from "next/headers";
 import { Theme } from "@/fsd/shared/config/theme/theme";
-import { ClientProvider } from "@/fsd/app/providers";
+import { AntdThemeProvider, ClientProvider } from "@/fsd/app/providers";
 
 const font = Montserrat({
   subsets: ["cyrillic", "latin"],
@@ -29,7 +29,9 @@ export default async function RootLayout({
   return (
     <html lang="ru" className={`${font.variable}`} data-theme={theme}>
       <body>
-        <ClientProvider>{children}</ClientProvider>
+        <ClientProvider>
+          <AntdThemeProvider>{children}</AntdThemeProvider>
+        </ClientProvider>
       </body>
     </html>
   );
