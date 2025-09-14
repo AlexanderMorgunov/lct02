@@ -1,0 +1,56 @@
+@layer theme, base, components, utilities;
+
+/* Подключаем слои Tailwind */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Токены цветов */
+@theme {
+  --color-primary-bg: var(--primary-bg);
+  --color-primary-text: var(--primary-text);
+  --color-header-bg: var(--header-bg);
+}
+
+/* Светлая тема */
+:root[data-theme="light"] {
+  --primary-bg: #ffffff;
+  --primary-text: #000000;
+  --header-bg: #f5f5f5;
+}
+
+/* Тёмная тема */
+:root[data-theme="dark"] {
+  --primary-bg: #001529;
+  --primary-text: #ffffff;
+  --header-bg: #141414;
+}
+
+/* Генерируем классы для Tailwind v4 */
+@layer utilities {
+  .bg-primary-bg {
+    background-color: var(--primary-bg);
+  }
+  .text-primary-text {
+    color: var(--primary-text);
+  }
+  .bg-header-bg {
+    background-color: var(--header-bg);
+  }
+  .border-border {
+    border-color: var(--primary-text); /* или отдельный токен для бордера */
+  }
+}
+
+/* Базовые ресеты */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--montserrat-font);
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+}
