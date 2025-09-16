@@ -1,10 +1,11 @@
-import { Layout, Avatar, Badge, Switch, Menu } from "antd";
-import { BellOutlined, UserOutlined } from "@ant-design/icons";
+import { Layout, Avatar, Switch, Menu } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { Theme } from "@/fsd/shared/config/theme/theme";
 import { IconLogo } from "@/fsd/shared/ui/IconLogo";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
 import { NavItem } from "../model/types";
+import { NotificationMenu } from "./NotificationMenu";
 
 const { Header, Sider, Content } = Layout;
 
@@ -36,13 +37,14 @@ export const PageLayout = ({ children, navItems }: PageLayoutProps) => {
           {/* Логотип */}
           <div className="flex flex-row items-center gap-4 text-2xl font-bold text-primary-text">
             <IconLogo className="w-8 h-8" /> МосТруба
+            <p className="text-sm font-medium">
+              - поток безопасности водоснабжения
+            </p>
           </div>
 
           {/* Правая часть */}
           <div className="flex items-center gap-5">
-            <Badge count={5}>
-              <BellOutlined className="text-2xl cursor-pointer !text-primary-text" />
-            </Badge>
+            <NotificationMenu />
 
             <Avatar icon={<UserOutlined />} />
 

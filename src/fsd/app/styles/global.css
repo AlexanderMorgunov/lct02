@@ -46,9 +46,9 @@
   .text-primary-text {
     color: var(--primary-text);
   }
-  .bg-header-bg {
-    background-color: var(--header-bg);
-  }
+}
+.bg-header-bg {
+  background-color: var(--header-bg);
   .border-border {
     border-color: var(--primary-text); /* или отдельный токен для бордера */
   }

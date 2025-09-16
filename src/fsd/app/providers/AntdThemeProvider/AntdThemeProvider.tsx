@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConfigProvider } from "antd";
 import locale from "antd/locale/ru_RU";
 import dayjs from "dayjs";
