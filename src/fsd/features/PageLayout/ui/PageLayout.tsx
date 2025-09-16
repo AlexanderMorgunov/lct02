@@ -1,3 +1,4 @@
+"use client";
 import { Layout, Avatar, Switch, Menu } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";

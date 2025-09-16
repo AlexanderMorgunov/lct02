@@ -9,16 +9,16 @@ interface AdminPageLayoutProps {
 const navItems = [
   {
     title: "На домашнюю",
-    href: ROUTES.ADMIN,
+    href: ROUTES.DISPATCHER,
     icon: <HomeOutlined />,
   },
   {
     title: "Настройки",
-    href: ROUTES.ADMIN_SETTINGS,
+    href: ROUTES.DISPATCHER_SETTINGS,
     icon: <SettingOutlined />,
   },
 ];
 
-export const AdminPageLayout = ({ children }: AdminPageLayoutProps) => {
+export const DispatcherPageLayout = ({ children }: AdminPageLayoutProps) => {
   return <PageLayout navItems={navItems}>{children}</PageLayout>;
 };

@@ -1,5 +1,5 @@
-import AdminPage from "@/fsd/pages/AdminPage/AdminPage";
+import { DispatcherPage } from "@/fsd/pages/DispatcherPage/DispatcherPage";
 
-export default function Home() {
-  return <AdminPage />;
+export default function Page() {
+  return <DispatcherPage />;
 }

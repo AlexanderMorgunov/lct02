@@ -1,3 +1,4 @@
+"use client";
 import { Badge, Dropdown, List, MenuProps } from "antd";
 import { mockNotifications } from "../mock/mockNotifications";
 import { BellOutlined } from "@ant-design/icons";
