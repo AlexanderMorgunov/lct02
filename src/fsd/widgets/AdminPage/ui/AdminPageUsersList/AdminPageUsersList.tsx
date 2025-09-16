@@ -132,38 +132,42 @@ export const AdminPageUsersList = () => {
           columns={columns}
           dataSource={filteredUsers}
           rowKey="id"
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 9 }}
           className="bg-primary-bg text-primary-text"
         />
       </div>
-      <UserModal
-        open={isAddUserOpen}
-        onClose={() => setIsAddUserOpen(false)}
-        onSubmit={(newUser) => {
-          setUsers((prev) => [
-            ...prev,
-            { ...newUser, id: Date.now() }, // временный id
-          ]);
-        }}
-      />
+      {isAddUserOpen && (
+        <UserModal
+          open={isAddUserOpen}
+          onClose={() => setIsAddUserOpen(false)}
+          onSubmit={(newUser) => {
+            setUsers((prev) => [
+              ...prev,
+              { ...newUser, id: Date.now() }, // временный id
+            ]);
+          }}
+        />
+      )}
 
-      <UserModal
-        open={isEditUserOpen}
-        onClose={() => {
-          setIsEditUserOpen(false);
-          setEditingUser(null);
-        }}
-        onSubmit={(newUser) => {
-          setUsers((prev) =>
-            prev.map((u) =>
-              u.id === editingUser?.id ? { ...u, ...newUser } : u
-            )
-          );
-          setIsEditUserOpen(false);
-          setEditingUser(null);
-        }}
-        user={editingUser ?? {}}
-      />
+      {isEditUserOpen && (
+        <UserModal
+          open={isEditUserOpen}
+          onClose={() => {
+            setIsEditUserOpen(false);
+            setEditingUser(null);
+          }}
+          onSubmit={(newUser) => {
+            setUsers((prev) =>
+              prev.map((u) =>
+                u.id === editingUser?.id ? { ...u, ...newUser } : u
+              )
+            );
+            setIsEditUserOpen(false);
+            setEditingUser(null);
+          }}
+          user={editingUser ?? {}}
+        />
+      )}
 
       {selectedUser && (
         <DeleteUserModal

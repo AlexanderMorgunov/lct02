@@ -3,7 +3,7 @@
 import "@ant-design/v5-patch-for-react-19";
 import { Modal, Form, Input, Select } from "antd";
 import { IUser } from "@/fsd/entities/AdminPage/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface UserModalProps {
   open: boolean;
@@ -39,15 +39,17 @@ export const UserModal = ({
     }
   };
 
-  // Когда модалка открывается, сразу сбрасываем форму и подставляем новые значения
-  if (open) {
-    form.setFieldsValue({
-      fullName: user?.fullName || "",
-      login: user?.login || "",
-      password: user?.password || "",
-      role: user?.role ?? null,
-    });
-  }
+  // Подставляем данные при открытии
+  useEffect(() => {
+    if (open) {
+      form.setFieldsValue({
+        ...user,
+      });
+      setSubmitted(false);
+    } else {
+      form.resetFields();
+    }
+  }, [open, user, form]);
 
   return (
     <Modal
