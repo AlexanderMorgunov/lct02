@@ -2,7 +2,6 @@
 
 import { IRegion } from "@/fsd/entities/Regions/types/type";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { useEffect, useState } from "react";
 
 interface DispatcheerMapProps {
   regions: IRegion[];
@@ -16,7 +15,7 @@ const mapOptions = {
 };
 
 export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
-  console.log(regions);
+  // console.log(regions);
   return (
     <YMaps>
       <Map

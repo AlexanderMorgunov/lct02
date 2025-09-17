@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { setupAxiosInterceptors } from "@/fsd/shared/network/interceptors";
 
 interface Props {
   children: ReactNode;
@@ -14,6 +15,8 @@ const ClientProvider = ({ children }: Props) => {
 
   useEffect(() => {
     setIsMounted(true);
+    // Подключаем интерцепторы один раз при маунте клиента
+    setupAxiosInterceptors();
   }, []);
 
   return isMounted ? (
