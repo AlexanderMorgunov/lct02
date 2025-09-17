@@ -7,6 +7,7 @@ import { IconLogo } from "@/fsd/shared/ui/IconLogo";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
 import { NavItem } from "../model/types";
 import { NotificationMenu } from "./NotificationMenu";
+import "@ant-design/v5-patch-for-react-19";
 
 const { Header, Sider, Content } = Layout;
 
