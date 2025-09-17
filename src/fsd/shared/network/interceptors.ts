@@ -1,3 +1,4 @@
+import { ROUTES } from "../config/routes";
 import { $reqApi } from "./axios";
 
 export function setupAxiosInterceptors() {
@@ -7,7 +8,7 @@ export function setupAxiosInterceptors() {
       const status = error.response?.status;
 
       if (status === 401 || status === 403) {
-        window.location.href = "/login";
+        window.location.href = ROUTES.LOGIN;
       }
 
       return Promise.reject(error);
