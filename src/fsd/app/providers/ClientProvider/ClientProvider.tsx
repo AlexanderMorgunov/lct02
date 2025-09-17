@@ -16,7 +16,7 @@ const ClientProvider = ({ children }: Props) => {
   useEffect(() => {
     setIsMounted(true);
     // Подключаем интерцепторы один раз при маунте клиента
-    setupAxiosInterceptors();
+    // setupAxiosInterceptors();
   }, []);
 
   return isMounted ? (

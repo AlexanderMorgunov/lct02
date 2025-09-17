@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useCurrentUser } from "@/fsd/entities/Auth/api/useCurrentUser";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { Spin } from "antd";
@@ -14,7 +14,7 @@ export const AuthCheckProvider = ({
   const router = useRouter();
   const { data: user, isLoading } = useCurrentUser();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user) {
       const roleRedirects: Record<string, string> = {
         admin: ROUTES.ADMIN,
@@ -22,13 +22,17 @@ export const AuthCheckProvider = ({
         worker: ROUTES.WORKER,
       };
 
-      const redirectPath = roleRedirects[user.role] ?? "/login";
+      const redirectPath = roleRedirects[user.role] ?? ROUTES.LOGIN;
       router.replace(redirectPath);
+    } else {
+      if (!isLoading) {
+        router.replace(ROUTES.LOGIN);
+      }
     }
-  }, [user, router]);
+  }, [user, router, isLoading]);
 
   if (isLoading) {
-    return <Spin size="large" />;
+    return <Spin size="large" fullscreen />;
   }
 
   return <>{children}</>;
