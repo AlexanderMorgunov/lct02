@@ -1,12 +1,15 @@
 'use client'
 
-import { Button, Form, Input, Radio } from 'antd';
+import {Button, Form, type FormProps, Input} from 'antd';
+import {type ILoginRequestData, useLogin} from "@/fsd/features/Login";
 
 export const Login = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<ILoginRequestData>();
+  const { mutate, isError, data } = useLogin();
 
-  const handleFinish = (values: { username: string; password: string }) => {
+  const handleFinish: FormProps<ILoginRequestData>['onFinish'] = (values) => {
     console.log("Форма отправлена:", values);
+    mutate(values);
   };
 
   return (
@@ -16,8 +19,8 @@ export const Login = () => {
         form={form}
         onFinish={handleFinish}
       >
-        <Form.Item
-          name="username"
+        <Form.Item<ILoginRequestData>
+          name="login"
           label="Логин"
           rules={[{
             required: true, message: "Введите логин!"
@@ -26,7 +29,7 @@ export const Login = () => {
         >
           <Input placeholder="Логин" />
         </Form.Item>
-        <Form.Item
+        <Form.Item<ILoginRequestData>
           name="password"
           label="Пароль"
           rules={[{
