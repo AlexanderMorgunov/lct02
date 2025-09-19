@@ -14,30 +14,30 @@ export const AuthCheckProvider = ({
   const router = useRouter();
   const { data: user, isLoading } = useCurrentUser();
 
-  useLayoutEffect(() => {
-    if (user) {
-      const roleRedirects: Record<string, string> = {
-        admin: ROUTES.ADMIN,
-        user: ROUTES.DISPATCHER,
-        worker: ROUTES.WORKER,
-      };
+  // useLayoutEffect(() => {
+  //   if (user) {
+  //     const roleRedirects: Record<string, string> = {
+  //       admin: ROUTES.ADMIN,
+  //       user: ROUTES.DISPATCHER,
+  //       worker: ROUTES.WORKER,
+  //     };
 
-      const redirectPath = roleRedirects[user.role] ?? ROUTES.LOGIN;
-      router.replace(redirectPath);
-    } else {
-      if (!isLoading) {
-        router.replace(ROUTES.LOGIN);
-      }
-    }
-  }, [user, router, isLoading]);
+  //     const redirectPath = roleRedirects[user.role] ?? ROUTES.LOGIN;
+  //     router.replace(redirectPath);
+  //   } else {
+  //     if (!isLoading) {
+  //       router.replace(ROUTES.LOGIN);
+  //     }
+  //   }
+  // }, [user, router, isLoading]);
 
-  if (isLoading) {
-    return <Spin size="large" fullscreen />;
-  }
+  // if (isLoading) {
+  //   return <Spin size="large" fullscreen />;
+  // }
 
-  if (user && !isLoading) {
-    return <>{children}</>;
-  }
+  // if (user && !isLoading) {
+  //   return <>{children}</>;
+  // }
 
   return <>{children}</>;
 };
