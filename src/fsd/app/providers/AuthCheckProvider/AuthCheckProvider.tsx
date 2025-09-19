@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useCurrentUser } from "@/fsd/entities/Auth/api/useCurrentUser";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { Spin } from "antd";
@@ -33,6 +33,10 @@ export const AuthCheckProvider = ({
 
   if (isLoading) {
     return <Spin size="large" fullscreen />;
+  }
+
+  if (user && !isLoading) {
+    return <>{children}</>;
   }
 
   return <>{children}</>;

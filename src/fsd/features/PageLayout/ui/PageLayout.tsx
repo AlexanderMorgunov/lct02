@@ -1,37 +1,42 @@
 "use client";
 import { Layout, Avatar, Switch, Menu } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import { Theme } from "@/fsd/shared/config/theme/theme";
 import { IconLogo } from "@/fsd/shared/ui/IconLogo";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
-import { NavItem } from "../model/types";
 import { NotificationMenu } from "./NotificationMenu";
 import "@ant-design/v5-patch-for-react-19";
+import { ItemType, MenuItemType } from "antd/es/menu/interface";
 
 const { Header, Sider, Content } = Layout;
 
 interface PageLayoutProps {
   children: React.ReactNode;
-  navItems: NavItem[];
+  // navItems?: NavItem[];
+  navItems?: ItemType<MenuItemType>[];
+  navChildren?: React.ReactNode;
 }
 
-export const PageLayout = ({ children, navItems }: PageLayoutProps) => {
+export const PageLayout = ({
+  children,
+  navItems,
+  navChildren,
+}: PageLayoutProps) => {
   const { theme, toggleTheme } = useThemeStore();
   return (
     <Layout className="h-screen">
       {/* Sidebar слева */}
-      <Sider width={200} collapsible theme={theme}>
-        <Menu
-          mode="inline"
-          theme={theme}
-          defaultSelectedKeys={[navItems[0].title]}
-          items={navItems.map(({ title, href, icon }) => ({
-            key: title,
-            icon,
-            label: <Link href={href}>{title}</Link>,
-          }))}
-        />
+      <Sider width={200} collapsible theme={theme} className="pt-12">
+        {navChildren ? (
+          navChildren
+        ) : navItems && navItems.length > 0 ? (
+          <Menu
+            mode="inline"
+            theme={theme}
+            defaultSelectedKeys={[navItems[0]?.key as string]}
+            items={navItems}
+          />
+        ) : null}
       </Sider>
 
       <Layout>
