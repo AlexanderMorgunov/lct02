@@ -8,7 +8,7 @@ import { cache } from "react";
 export default class AuthEndPoint {
   static getCurrentUser = cache(async (): Promise<ICurrentUser | null> => {
     const { data } = await $reqApi.get<IGetCurrentUserResponse>(
-      "/auth/current"
+      "/api/auth/current"
     );
     return data.status === "ok" ? data.data : null;
   });
@@ -20,7 +20,7 @@ export default class AuthEndPoint {
       IGetCurrentUserResponse,
       AxiosResponse<IGetCurrentUserResponse>,
       ILoginRequestData
-    >("/auth/login", requestData);
+    >("/api/auth/login", requestData);
     return data.status === "ok" ? data.data : null;
   };
 }

@@ -35,5 +35,9 @@ export const AuthCheckProvider = ({
     return <Spin size="large" fullscreen />;
   }
 
+  if (user && !isLoading) {
+    return <>{children}</>;
+  }
+
   return <>{children}</>;
 };
