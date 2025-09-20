@@ -2,11 +2,12 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { $api } from "@/fsd/shared/network/api";
-import { ILoginRequestData } from "@/fsd/features/Login";
-import {ICurrentUser} from "@/fsd/entities/Auth/types/types";
+import { ApiErrorLogin, ILoginRequestData } from "@/fsd/features/Login";
+import { ICurrentUser } from "@/fsd/entities/Auth/types/types";
 import { AxiosError } from "axios";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { useRouter } from "next/navigation";
+import { USER } from "@/fsd/shared/constants";
 
 const roleRedirects: Record<string, string> = {
   admin: ROUTES.ADMIN,
@@ -16,10 +17,11 @@ const roleRedirects: Record<string, string> = {
 
 export const useLogin = () => {
   const router = useRouter();
-  return useMutation<ICurrentUser | null, AxiosError, ILoginRequestData>({
+  return useMutation<ICurrentUser | null, AxiosError<ApiErrorLogin>, ILoginRequestData>({
     mutationFn: async (requestData) => $api.auth.AuthEndPoint.login(requestData),
     onSuccess: (data) => {
       if (data) {
+        localStorage.setItem(USER, JSON.stringify(data));
         const redirectPath = roleRedirects[data.role];
         router.replace(redirectPath);
       }
