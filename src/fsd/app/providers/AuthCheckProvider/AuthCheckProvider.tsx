@@ -1,43 +1,44 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useLayoutEffect } from "react";
-import { useCurrentUser } from "@/fsd/entities/Auth/api/useCurrentUser";
+import { usePathname, useRouter } from "next/navigation";
+import { useLayoutEffect, useState } from "react";
 import { ROUTES } from "@/fsd/shared/config/routes";
+import { USER } from "@/fsd/shared/constants";
+import { ICurrentUser } from "@/fsd/entities/Auth/types/types";
 import { Spin } from "antd";
 
-export const AuthCheckProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const roleRedirects: Record<string, string> = {
+  admin: ROUTES.ADMIN,
+  user: ROUTES.DISPATCHER,
+  worker: ROUTES.WORKER,
+};
+
+export const AuthCheckProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
   const router = useRouter();
-  const { data: user, isLoading } = useCurrentUser();
+  const pathname = usePathname();
 
-  // useLayoutEffect(() => {
-  //   if (user) {
-  //     const roleRedirects: Record<string, string> = {
-  //       admin: ROUTES.ADMIN,
-  //       user: ROUTES.DISPATCHER,
-  //       worker: ROUTES.WORKER,
-  //     };
+  useLayoutEffect(() => {
+    const userJSON = localStorage.getItem(USER);
+    const user: ICurrentUser | null = userJSON ? JSON.parse(userJSON) : null;
 
-  //     const redirectPath = roleRedirects[user.role] ?? ROUTES.LOGIN;
-  //     router.replace(redirectPath);
-  //   } else {
-  //     if (!isLoading) {
-  //       router.replace(ROUTES.LOGIN);
-  //     }
-  //   }
-  // }, [user, router, isLoading]);
+    if (!user) {
+      router.replace(ROUTES.LOGIN);
+      return;
+    }
 
-  // if (isLoading) {
-  //   return <Spin size="large" fullscreen />;
-  // }
+    const redirectPath = roleRedirects[user.role] ?? ROUTES.LOGIN;
+    if (!pathname.startsWith(redirectPath)) {
+      router.replace(redirectPath);
+      return;
+    }
 
-  // if (user && !isLoading) {
-  //   return <>{children}</>;
-  // }
+    setIsAuthChecked(true);
+  }, [router, pathname]);
+
+  if (!isAuthChecked) {
+    return <Spin size="large" fullscreen />;
+  }
 
   return <>{children}</>;
 };
