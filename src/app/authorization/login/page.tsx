@@ -3,29 +3,19 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginPage } from "@/fsd/pages/LoginPage";
-import { Spin } from "antd";
-import { USER } from "@/fsd/shared/constants";
-import { ROUTES } from "@/fsd/shared/config/routes";
+import { useAuthentication} from "@/fsd/shared/store/auth/authorization";
+import {Spin} from "antd";
 
 export default function Page() {
   const router = useRouter();
-  const [checking, setChecking] = useState(true);
+  const { isLoggedIn } = useAuthentication();
 
   useEffect(() => {
-    const userJSON = localStorage.getItem( USER );
-
-    if (userJSON) {
-      // если пользователь уже залогинен, редирект на /redirect
-      router.replace(ROUTES.REDIRECT);
+    if (isLoggedIn) {
+      router.replace('/');
       return;
     }
+  }, [isLoggedIn]);
 
-    setChecking(false);
-  }, [router]);
-
-  if (checking) {
-    return <Spin size="large" fullscreen />;
-  }
-
-  return <LoginPage />;
+  return !isLoggedIn ? <LoginPage /> : null;
 }

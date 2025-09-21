@@ -2,28 +2,21 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { $api } from "@/fsd/shared/network/api";
-import { ApiErrorLogin, ILoginRequestData } from "@/fsd/features/Login";
-import { ICurrentUser } from "@/fsd/entities/Auth/types/types";
+import {ApiErrorLogin, ILoginRequestData, ILoginResponseData} from "@/fsd/features/Login";
 import { AxiosError } from "axios";
-import { ROUTES } from "@/fsd/shared/config/routes";
 import { useRouter } from "next/navigation";
-import { USER } from "@/fsd/shared/constants";
-
-const roleRedirects: Record<string, string> = {
-  admin: ROUTES.ADMIN,
-  user: ROUTES.DISPATCHER,
-  worker: ROUTES.WORKER,
-};
+import {useAuthentication} from "@/fsd/shared/store/auth/authorization";
 
 export const useLogin = () => {
   const router = useRouter();
-  return useMutation<ICurrentUser | null, AxiosError<ApiErrorLogin>, ILoginRequestData>({
+  const { login } = useAuthentication();
+
+  return useMutation<ILoginResponseData | null, AxiosError<ApiErrorLogin>, ILoginRequestData>({
     mutationFn: async (requestData) => $api.auth.AuthEndPoint.login(requestData),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data) {
-        localStorage.setItem(USER, JSON.stringify(data));
-        const redirectPath = roleRedirects[data.role];
-        router.replace(redirectPath);
+        await login(data.access_token);
+        router.replace('/');
       }
     },
   });

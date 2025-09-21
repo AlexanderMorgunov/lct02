@@ -1,9 +1,23 @@
+'use client';
+
 import { $api } from "@/fsd/shared/network/api";
 import { DispatcherMap } from "@/fsd/widgets/DispatcherPage/ui/DispatcherMap/DispatcherMap";
-import React from "react";
+import { IRegion } from "@/fsd/entities/Regions";
+import { useQuery } from "@tanstack/react-query";
+import { Spin } from "antd";
 
-export const DispatcherPage = async () => {
-  const data = await $api.regions.RegionsEndPoint.getRegions();
+export const DispatcherPage = () => {
+  const { data, isLoading } = useQuery<IRegion[] | null>({
+    queryKey: ["getRegions"],
+    queryFn: async () => {
+      const regions = await $api.regions.RegionsEndPoint.getRegions();
+      return regions;
+    },
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  return <DispatcherMap regions={data ?? []} />;
+  if (isLoading) return <Spin size="large" />;
+
+  return data && !isLoading ? <DispatcherMap regions={data ?? []} /> : null;
 };
