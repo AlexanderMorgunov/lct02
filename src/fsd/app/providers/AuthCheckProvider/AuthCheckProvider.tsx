@@ -1,44 +1,20 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
 import { ROUTES } from "@/fsd/shared/config/routes";
-import { USER } from "@/fsd/shared/constants";
-import { ICurrentUser } from "@/fsd/entities/Auth/types/types";
+import { useAuthentication } from "@/fsd/shared/store/auth/authorization";
 import { Spin } from "antd";
 
-const roleRedirects: Record<string, string> = {
-  admin: ROUTES.ADMIN,
-  user: ROUTES.DISPATCHER,
-  worker: ROUTES.WORKER,
-};
-
 export const AuthCheckProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const { isLoggedIn } = useAuthentication();
   const router = useRouter();
-  const pathname = usePathname();
 
   useLayoutEffect(() => {
-    const userJSON = localStorage.getItem(USER);
-    const user: ICurrentUser | null = userJSON ? JSON.parse(userJSON) : null;
-
-    if (!user) {
+    if (!isLoggedIn) {
       router.replace(ROUTES.LOGIN);
-      return;
     }
+  }, [isLoggedIn, router]);
 
-    const redirectPath = roleRedirects[user.role] ?? ROUTES.LOGIN;
-    if (!pathname.startsWith(redirectPath)) {
-      router.replace(redirectPath);
-      return;
-    }
-
-    setIsAuthChecked(true);
-  }, [router, pathname]);
-
-  if (!isAuthChecked) {
-    return <Spin size="large" fullscreen />;
-  }
-
-  return <>{children}</>;
+  return isLoggedIn ? <>{children}</> : <Spin size="large" fullscreen />;
 };

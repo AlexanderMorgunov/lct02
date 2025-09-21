@@ -15,7 +15,7 @@ const mapOptions = {
 };
 
 export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
-  // console.log(regions);
+  console.log(regions);
   return (
     <YMaps>
       <Map
