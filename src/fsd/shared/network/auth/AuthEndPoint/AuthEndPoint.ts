@@ -1,7 +1,7 @@
 import { ICurrentUser } from "@/fsd/entities/Auth/types/types";
 import { $reqApi } from "../../axios";
 import { IGetCurrentUserResponse } from "../type";
-import { ILoginRequestData } from "@/fsd/features/Login";
+import {ILoginRequestData, ILoginResponse, ILoginResponseData} from "@/fsd/features/Login";
 import { AxiosResponse } from "axios";
 import { cache } from "react";
 
@@ -15,10 +15,10 @@ export default class AuthEndPoint {
 
   static login = async (
     requestData: ILoginRequestData
-  ): Promise<ICurrentUser | null> => {
+  ): Promise<ILoginResponseData | null> => {
     const { data } = await $reqApi.post<
-      IGetCurrentUserResponse,
-      AxiosResponse<IGetCurrentUserResponse>,
+      ILoginResponse,
+      AxiosResponse<ILoginResponse>,
       ILoginRequestData
     >("/api/auth/login", requestData);
     return data.status === "ok" ? data.data : null;

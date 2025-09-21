@@ -4,5 +4,6 @@ export const ROUTES = {
   LOGIN: "/authorization/login",
   DISPATCHER: "/dispatcher",
   DISPATCHER_SETTINGS: "/dispatcher/settings",
-  WORKER: "/worker", //
+  WORKER: "/worker",
+  REDIRECT: "/redirect",
 } as const;

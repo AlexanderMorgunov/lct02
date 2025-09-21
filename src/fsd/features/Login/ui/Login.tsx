@@ -6,11 +6,23 @@ import "@ant-design/v5-patch-for-react-19";
 
 export const Login = () => {
   const [form] = Form.useForm<ILoginRequestData>();
-  const { mutate, isError, data } = useLogin();
+  const { mutate, isPending } = useLogin();
 
   const handleFinish: FormProps<ILoginRequestData>["onFinish"] = (values) => {
-    console.log("Форма отправлена:", values);
-    mutate(values);
+    mutate(values, {
+      onError: (error) => {
+        form.setFields([
+          {
+            name: "login",
+            errors: [error?.response?.data?.message || "Нет доступа"],
+          },
+          {
+            name: "password",
+            errors: [error?.response?.data?.message || "Нет доступа"],
+          },
+        ]);
+      }
+    });
   };
 
   return (
@@ -42,7 +54,7 @@ export const Login = () => {
         >
           <Input.Password placeholder="Пароль" />
         </Form.Item>
-        <Button htmlType="submit" type="primary" className={"w-full"}>
+        <Button htmlType="submit" type="primary" className={"w-full"} disabled={isPending}>
           Войти
         </Button>
       </Form>
