@@ -5,9 +5,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <AuthCheckProvider>
-        <RoleCheckProvider>
-          {children}
-        </RoleCheckProvider>
+        <RoleCheckProvider>{children}</RoleCheckProvider>
       </AuthCheckProvider>
     </>
   );

@@ -14,6 +14,9 @@
   --color-success-hover: #2f855a;
   --color-danger: #ff4d4f;
   --color-danger-hover: #ff7875;
+  --color-water: #007bff;
+  --color-gray: #8588a3;
+  --color-hot: #ea1204;
 }
 
 /* Светлая тема */
@@ -25,6 +28,7 @@
   --color-success-hover: #2f855a;
   --color-danger: #ff4d4f;
   --color-danger-hover: #ff7875;
+  --color-water: #007bff;
 }
 
 /* Тёмная тема */
@@ -36,6 +40,7 @@
   --color-success-hover: #2f855a;
   --color-danger: #ff4d4f;
   --color-danger-hover: #ff7875;
+  --color-water: #007bff;
 }
 
 /* Генерируем классы для Tailwind v4 */

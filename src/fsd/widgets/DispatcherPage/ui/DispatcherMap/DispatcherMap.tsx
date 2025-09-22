@@ -1,7 +1,11 @@
 "use client";
 
+import { useGetLocations } from "@/fsd/entities/locations/api/useGetLocations";
 import { IRegion } from "@/fsd/entities/Regions/types/type";
+import { ROUTES } from "@/fsd/shared/config/routes";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface DispatcheerMapProps {
   regions: IRegion[];
@@ -15,7 +19,21 @@ const mapOptions = {
 };
 
 export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
-  console.log(regions);
+  const { data: locations } = useGetLocations();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        if (target.classList.contains("balloon-link")) {
+          const id = target.getAttribute("data-id");
+          if (id) router.push(`${ROUTES.LOCATION}/${id}`);
+        }
+      });
+    }
+  }, [router]);
+
   return (
     <YMaps>
       <Map
@@ -24,16 +42,31 @@ export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
         height="100%"
         options={mapOptions}
       >
-        {regions.map((region) => (
-          <Placemark
-            key={region.id}
-            geometry={[region.lat, region.long]}
-            properties={{ balloonContentBody: region.title }}
-            onClick={() => {
-              console.log("region", region);
-            }}
-          />
-        ))}
+        {locations &&
+          locations.map((loc) => (
+            <Placemark
+              modules={["geoObject.addon.balloon", "geoObject.addon.hint"]}
+              key={loc.id}
+              geometry={[loc.lat, loc.long]}
+              properties={{
+                balloonContent: `
+      <div class="balloon">
+        <div class="balloon-title">${loc.title}</div>
+        <button class="balloon-link" data-id="${loc.id}"
+              style="margin-top: 10px; color: white; background-color: #1677ff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;"
+        ">Подробнее</button>
+      </div>
+    `,
+              }}
+              options={{
+                balloonCloseButton: true,
+                openBalloonOnClick: true,
+              }}
+              onClick={() => {
+                /// show tooltip
+              }}
+            />
+          ))}
       </Map>
     </YMaps>
   );

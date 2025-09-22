@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DispatcherMap } from "@/fsd/widgets/DispatcherPage/ui/DispatcherMap/DispatcherMap";
 import { useGetRegions } from "@/fsd/entities/Regions";
