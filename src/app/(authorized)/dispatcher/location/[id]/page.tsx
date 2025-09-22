@@ -1,5 +1,6 @@
 import { LocationPage } from "@/fsd/pages/Location/LocationPage";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  return <LocationPage id={params.id} />;
+  const { id } = await params;
+  return <LocationPage id={id} />;
 }
