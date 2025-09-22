@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Spin, Tooltip } from "antd";
 import { cn } from "@/fsd/shared/utils/cn/cn";
@@ -77,7 +77,7 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
         <div
           key={text.id}
           className={cn(
-            "absolute z-20 text-sm flex text-center font-bold",
+            "absolute z-30 text-sm flex text-center font-bold !text-black",
             text.className
           )}
         >
