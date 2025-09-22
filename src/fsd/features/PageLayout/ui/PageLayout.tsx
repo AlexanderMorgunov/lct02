@@ -1,12 +1,12 @@
 "use client";
-import { Layout, Avatar, Switch, Menu } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Layout, Switch, Menu } from "antd";
 import { Theme } from "@/fsd/shared/config/theme/theme";
 import { IconLogo } from "@/fsd/shared/ui/IconLogo";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
 import { NotificationMenu } from "./NotificationMenu";
 import "@ant-design/v5-patch-for-react-19";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { AvatarMenu } from "@/fsd/features/PageLayout/ui/AvatarMenu";
 
 const { Header, Sider, Content } = Layout;
 
@@ -53,7 +53,7 @@ export const PageLayout = ({
           <div className="flex items-center gap-5">
             <NotificationMenu />
 
-            <Avatar icon={<UserOutlined />} />
+            <AvatarMenu />
 
             <Switch
               checkedChildren="🌙"
