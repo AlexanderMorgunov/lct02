@@ -1,7 +1,7 @@
 export interface Iindication {
   location_id: number;
   date_at: string;
-  time_of_day: string;
+  time_of_day: number;
   hot_water_in: number;
   hot_water_out: number;
   hot_consumption: number;
@@ -12,6 +12,8 @@ export interface Iindication {
   id: number;
   created_at: string;
   updated_at: string;
+  ratio: number;
+  status: boolean;
 }
 
 export interface IGetIndicationResponse {

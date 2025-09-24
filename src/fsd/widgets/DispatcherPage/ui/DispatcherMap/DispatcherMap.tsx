@@ -3,6 +3,7 @@
 import { useGetLocations } from "@/fsd/entities/locations/api/useGetLocations";
 import { IRegion } from "@/fsd/entities/Regions/types/type";
 import { ROUTES } from "@/fsd/shared/config/routes";
+import { useMapCoordinates } from "@/fsd/shared/store/mapCoordinates/useMapCoordinates";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -21,6 +22,7 @@ const mapOptions = {
 export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
   const { data: locations } = useGetLocations();
   const router = useRouter();
+  const { coordinates } = useMapCoordinates();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -37,7 +39,11 @@ export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
   return (
     <YMaps>
       <Map
-        defaultState={{ center: [55.75, 37.57], zoom: 9 }}
+        defaultState={{ center: [50.75, 30.57], zoom: 9 }}
+        state={{
+          center: [coordinates.lat, coordinates.long],
+          zoom: 14,
+        }}
         width="100%"
         height="100%"
         options={mapOptions}
@@ -61,9 +67,6 @@ export const DispatcherMap = ({ regions }: DispatcheerMapProps) => {
               options={{
                 balloonCloseButton: true,
                 openBalloonOnClick: true,
-              }}
-              onClick={() => {
-                /// show tooltip
               }}
             />
           ))}
