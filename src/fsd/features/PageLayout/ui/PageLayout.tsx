@@ -7,12 +7,12 @@ import { NotificationMenu } from "./NotificationMenu";
 import "@ant-design/v5-patch-for-react-19";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { AvatarMenu } from "@/fsd/features/PageLayout/ui/AvatarMenu";
+import { useState } from "react";
 
 const { Header, Sider, Content } = Layout;
 
 interface PageLayoutProps {
   children: React.ReactNode;
-  // navItems?: NavItem[];
   navItems?: ItemType<MenuItemType>[];
   navChildren?: React.ReactNode;
 }
@@ -23,10 +23,22 @@ export const PageLayout = ({
   navChildren,
 }: PageLayoutProps) => {
   const { theme, toggleTheme } = useThemeStore();
+  const defaultKey = ["Округа"];
+  const [openKeys, setOpenKeys] = useState<string[]>(defaultKey);
+
   return (
     <Layout className="h-screen">
       {/* Sidebar слева */}
-      <Sider width={200} collapsible theme={theme} className="pt-12">
+      <Sider
+        width={200}
+        collapsible
+        theme={theme}
+        className="pt-12"
+        onCollapse={() => {
+          const newVal = !openKeys.length ? defaultKey : [];
+          setOpenKeys(newVal);
+        }}
+      >
         {navChildren ? (
           navChildren
         ) : navItems && navItems.length > 0 ? (
@@ -35,6 +47,8 @@ export const PageLayout = ({
             theme={theme}
             defaultSelectedKeys={[navItems[0]?.key as string]}
             items={navItems}
+            openKeys={openKeys}
+            expandIcon={null}
           />
         ) : null}
       </Sider>

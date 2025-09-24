@@ -1,5 +1,5 @@
-import { DispatcherScheme } from "@/fsd/widgets/DispatcherPage/ui/DispatcherScheme/DispatcherScheme";
+import { DispatcherMediator } from "@/fsd/features/DispatcherPage";
 
 export const LocationPage = ({ id }: { id: string }) => {
-  return <DispatcherScheme location_id={id} />;
+  return <DispatcherMediator location_id={id} />;
 };
