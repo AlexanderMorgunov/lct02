@@ -18,8 +18,11 @@ interface ThemeState {
 
 export const useThemeStore = create<ThemeState>((set) => {
   // читаем тему из куки при создании стора
-  const cookieTheme = getCookie("theme") as Theme | null;
-  const initialTheme = cookieTheme || Theme.DARK;
+  // const cookieTheme = getCookie("theme") as Theme | null;
+  // const initialTheme = cookieTheme || Theme.LIGHT;
+  const initialTheme = document.documentElement.getAttribute(
+    "data-theme"
+  ) as Theme;
 
   return {
     theme: initialTheme,
