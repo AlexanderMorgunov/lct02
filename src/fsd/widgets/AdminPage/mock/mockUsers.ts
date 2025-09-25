@@ -1,4 +1,4 @@
-import { IUser } from "@/fsd/entities/AdminPage/types";
+import { IUser } from "@/fsd/entities/AdminPage/types/types";
 
 export const mockUsers: IUser[] = [
   {

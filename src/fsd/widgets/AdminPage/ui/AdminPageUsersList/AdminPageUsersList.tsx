@@ -1,64 +1,152 @@
 "use client";
 
-import { Table, Avatar, Button, Space, App } from "antd";
+import { Table, Avatar, Button, Space, App, TableProps } from "antd";
 import { EditOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import { mockUsers } from "../../mock/mockUsers";
-import { IUser, Role } from "@/fsd/entities/AdminPage/types";
-import type { SortOrder } from "antd/es/table/interface";
+import {useEffect, useState} from "react";
+import { Role } from "@/fsd/entities/AdminPage";
 import { useFilerUsersList } from "../../hooks/useFilerUsersList";
 import { UserModal } from "../UserModal/UserModal";
 import { DeleteUserModal } from "../DeleteUserModal/DeleteUserModal";
+import { useGetUsers } from "@/fsd/widgets/AdminPage/api/useGetUsers";
+import {
+  ICreateUserRequestBody,
+  IEditUserRequestBody,
+  IGetUsersRequestParams,
+  IUser,
+} from "@/fsd/shared/network/users/types";
+import { getNameInitials } from "@/fsd/shared/utils/getNameInitials";
+import { useCreateUser } from "@/fsd/widgets/AdminPage/api/useCreateUser";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteUser } from "@/fsd/widgets/AdminPage/api/useDeleteUser";
+import { useEditUser } from "@/fsd/widgets/AdminPage/api/useEditUser";
+
+type SortKeys = "name" | "login" | "role";
 
 const roleLabels: Record<IUser["role"], Role> = {
-  0: Role.Admin,
-  1: Role.Dispatcher,
-  2: Role.Emergency,
+  admin: Role.Admin,
+  user: Role.Dispatcher,
+  worker: Role.Emergency,
 };
 
+const PAGE_SIZE = 3;
+
 export const AdminPageUsersList = () => {
-  const [users, setUsers] = useState<IUser[]>(mockUsers);
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [isEditUserOpen, setIsEditUserOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<IUser | null>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
-  const { message } = App.useApp();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortField, setSortField] = useState<SortKeys | null>(null);
+  const [sortOrder, setSortOrder] = useState<boolean | null>(null); // true = desc, false = asc
 
   const {
     showNameInput,
     showLoginInput,
     showSelectRole,
-    filteredUsers,
     fioTitle,
     loginTitle,
     roleTitle,
-  } = useFilerUsersList({ users });
+    deferredSearchLoginText,
+    deferredSearchNameText,
+    roleFilter
+  } = useFilerUsersList();
 
-  const handleDelete = (id: number) => {
-    setUsers((prev) => prev.filter((u) => u.id !== id));
-    setDeleteModalOpen(false);
-    setSelectedUser(null);
-    message.success(`Пользователь id: ${id} удален`);
+  const params: IGetUsersRequestParams = {
+    page: currentPage,
+    page_size: PAGE_SIZE,
+    ...(sortField && sortOrder !== null
+      ? { [`${sortField}_sort`]: sortOrder }
+      : {}),
+    ...(deferredSearchLoginText ? { login: deferredSearchLoginText } : {}),
+    ...(deferredSearchNameText ? { name: deferredSearchNameText } : {}),
+    ...(roleFilter ? { role: roleFilter } : {}),
   };
 
-  const getNameInitials = (fullName: string) =>
-    fullName
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
+// Генерируем queryKey для react-query
+  const queryKey = [
+    "getUsers",
+    currentPage,
+    ...(sortField && sortOrder !== null ? [sortField, sortOrder] : []),
+    ...(deferredSearchLoginText ? [deferredSearchLoginText] : []),
+    ...(deferredSearchNameText ? [deferredSearchNameText] : []),
+    ...(roleFilter ? [roleFilter] : []),
+  ];
+
+  const queryClient = useQueryClient();
+  const { message } = App.useApp();
+
+  const { data, isLoading } = useGetUsers(queryKey, params);
+  const { mutate: createUser } = useCreateUser();
+  const { mutate: deleteUser } = useDeleteUser();
+  const { mutate: editUser } = useEditUser();
+
+  useEffect(() => {
+    if (deferredSearchNameText || deferredSearchLoginText || roleFilter) {
+      setCurrentPage(1);
+    }
+  }, [deferredSearchNameText, deferredSearchLoginText, roleFilter])
+
+  const handleTableChange: TableProps<IUser>["onChange"] = (_, __, sorter) => {
+    if (!Array.isArray(sorter) && sorter?.field) {
+      const field = sorter.field as SortKeys;
+      if (sorter.order === "ascend") {
+        setSortField(field);
+        setSortOrder(false);
+      } else if (sorter.order === "descend") {
+        setSortField(field);
+        setSortOrder(true);
+      } else {
+        setSortField(null);
+        setSortOrder(null);
+      }
+    } else {
+      setSortField(null);
+      setSortOrder(null);
+    }
+  };
+
+  const handleAddUser = (newUser: ICreateUserRequestBody) => {
+    createUser(newUser, {
+      onSuccess: async () => {
+        queryClient.removeQueries({ queryKey: ["getUsers"] });
+        setIsAddUserOpen(false);
+      },
+    });
+  };
+
+  const handleEditUser = (userId: number, user: IEditUserRequestBody) => {
+    editUser({ userId, body: user }, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+        setIsEditUserOpen(false);
+        setEditingUser(null);
+      },
+    });
+  };
+
+  const handleDelete = (id: number) => {
+    deleteUser(id, {
+      onSuccess: async () => {
+        queryClient.removeQueries({ queryKey: ["getUsers"] });
+        const total = (data?.pagination.count ?? 0) - 1;
+        console.log(total);
+        const lastPage = Math.ceil(total / PAGE_SIZE);
+        setCurrentPage((prev) => prev > lastPage ? lastPage : prev);
+        setDeleteModalOpen(false);
+        setSelectedUser(null);
+        message.success(`Пользователь id: ${id} удален`);
+      },
+    });
+  };
 
   const columns = [
     {
       title: fioTitle,
-      dataIndex: "fullName",
-      key: "fullName",
-      sorter: !showNameInput
-        ? (a: IUser, b: IUser) => a.fullName.localeCompare(b.fullName)
-        : undefined,
-      defaultSortOrder: "ascend" as SortOrder,
+      dataIndex: "name",
+      key: "name",
+      sorter: !showNameInput ? true : undefined,
       render: (text: string) => (
         <div className="flex items-center gap-3">
           <Avatar className="bg-primary-text text-primary-bg">
@@ -73,19 +161,14 @@ export const AdminPageUsersList = () => {
       title: loginTitle,
       dataIndex: "login",
       key: "login",
-      sorter: !showLoginInput
-        ? (a: IUser, b: IUser) => a.login.localeCompare(b.login)
-        : undefined,
+      sorter: !showLoginInput ? true : undefined,
       className: "w-[25rem]",
     },
     {
       title: roleTitle,
       dataIndex: "role",
       key: "role",
-      sorter: !showSelectRole
-        ? (a: IUser, b: IUser) =>
-            roleLabels[a.role].localeCompare(roleLabels[b.role])
-        : undefined,
+      sorter: !showSelectRole ? true : undefined,
       render: (role: IUser["role"]) => roleLabels[role],
       className: "w-[25rem]",
     },
@@ -130,41 +213,37 @@ export const AdminPageUsersList = () => {
 
         <Table
           columns={columns}
-          dataSource={filteredUsers}
-          rowKey="id"
-          pagination={{ pageSize: 9 }}
+          dataSource={data?.users || []}
+          rowKey={(record) => record.id}
+          loading={isLoading}
+          onChange={handleTableChange}
+          pagination={{
+            pageSize: PAGE_SIZE,
+            total: data?.pagination.count,
+            current: currentPage,
+            onChange: (page) => setCurrentPage(page),
+            showLessItems: true,
+          }}
           className="bg-primary-bg text-primary-text"
         />
       </div>
+
       {isAddUserOpen && (
-        <UserModal
+        <UserModal<"create">
           open={isAddUserOpen}
           onClose={() => setIsAddUserOpen(false)}
-          onSubmit={(newUser) => {
-            setUsers((prev) => [
-              ...prev,
-              { ...newUser, id: Date.now() }, // временный id
-            ]);
-          }}
+          onSubmit={handleAddUser}
         />
       )}
 
-      {isEditUserOpen && (
-        <UserModal
+      {isEditUserOpen && editingUser && (
+        <UserModal<"edit">
           open={isEditUserOpen}
           onClose={() => {
             setIsEditUserOpen(false);
             setEditingUser(null);
           }}
-          onSubmit={(newUser) => {
-            setUsers((prev) =>
-              prev.map((u) =>
-                u.id === editingUser?.id ? { ...u, ...newUser } : u
-              )
-            );
-            setIsEditUserOpen(false);
-            setEditingUser(null);
-          }}
+          onSubmit={(v) => handleEditUser(editingUser.id, v)}
           user={editingUser ?? {}}
         />
       )}
@@ -174,7 +253,7 @@ export const AdminPageUsersList = () => {
           open={deleteModalOpen}
           onClose={() => setDeleteModalOpen(false)}
           onConfirm={() => handleDelete(selectedUser.id)}
-          userName={selectedUser.fullName}
+          userName={selectedUser.name}
         />
       )}
     </>

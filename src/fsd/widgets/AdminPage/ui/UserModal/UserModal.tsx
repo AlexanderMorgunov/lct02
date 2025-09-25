@@ -1,31 +1,44 @@
 "use client";
 
 import "@ant-design/v5-patch-for-react-19";
-import { Modal, Form, Input, Select } from "antd";
-import { IUser } from "@/fsd/entities/AdminPage/types";
+import { Modal, Form, Input, Select, Checkbox } from "antd";
+import type { CheckboxProps } from "antd";
 import { useEffect, useState } from "react";
+import {ICreateUserRequestBody, IEditUserRequestBody, IUser, TUserRole} from "@/fsd/shared/network/users/types";
+import { PasswordField } from "@/fsd/widgets/AdminPage/ui/UserModal/PasswordField";
 
-interface UserModalProps {
+
+type UserModalProps<T extends "create" | "edit"> = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (user: Omit<IUser, "id">) => void;
-  user?: Partial<IUser>;
+} & (T extends "create"
+  ? { onSubmit: (user: ICreateUserRequestBody) => void; user?: undefined }
+  : { onSubmit: (user: IEditUserRequestBody) => void; user: IUser | object });
+
+interface RoleOption {
+  label: string;
+  value: TUserRole;
 }
 
-const roleOptions = [
-  { label: "Администратор", value: 0 },
-  { label: "Диспетчер", value: 1 },
-  { label: "Аварийный", value: 2 },
+const roleOptions: RoleOption[] = [
+  { label: "Администратор", value: 'admin' },
+  { label: "Диспетчер", value: 'user' },
+  { label: "Аварийный", value: 'worker' },
 ];
 
-export const UserModal = ({
+export const UserModal = <T extends "create" | "edit">({
   open,
   onClose,
   onSubmit,
   user,
-}: UserModalProps) => {
+}: UserModalProps<T>) => {
   const [form] = Form.useForm();
   const [submitted, setSubmitted] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const onChangeCheckbox: CheckboxProps['onChange'] = (e) => {
+    setIsShowPassword(e.target.checked);
+  };
 
   const handleSubmit = async () => {
     try {
@@ -33,7 +46,6 @@ export const UserModal = ({
       onSubmit(values);
       form.resetFields();
       setSubmitted(false);
-      onClose();
     } catch {
       setSubmitted(true);
     }
@@ -71,7 +83,7 @@ export const UserModal = ({
         validateTrigger={submitted ? "onChange" : "onSubmit"}
       >
         <Form.Item
-          name="fullName"
+          name="name"
           label="ФИО"
           rules={[{ required: true, message: "Введите ФИО" }]}
         >
@@ -86,28 +98,13 @@ export const UserModal = ({
           <Input placeholder="ivanov" />
         </Form.Item>
 
-        <Form.Item
-          name="password"
-          label="Пароль"
-          rules={[
-            { required: true, message: "Введите пароль" },
-            { min: 8, message: "Минимальная длина пароля - 8 символов" },
-            {
-              validator: (_, value) => {
-                if (!value) return Promise.resolve();
-                if (/[а-яА-ЯЁё]/.test(value))
-                  return Promise.reject("Пароль не должен содержать кириллицу");
-                if (!/[!@#$%^&*(),.?":{}|<>]/.test(value))
-                  return Promise.reject(
-                    "Пароль должен содержать хотя бы один спецсимвол"
-                  );
-                return Promise.resolve();
-              },
-            },
-          ]}
-        >
-          <Input.Password placeholder="Введите пароль" />
-        </Form.Item>
+        {user && <Checkbox style={{ marginBottom: '24px' }} onChange={onChangeCheckbox}>Изменить пароль</Checkbox>}
+
+        {!user ? (
+          <PasswordField />
+        ) : isShowPassword ? (
+          <PasswordField />
+        ) : null}
 
         <Form.Item
           name="role"
