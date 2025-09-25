@@ -18,7 +18,7 @@ type UserModalProps<T extends "create" | "edit"> = {
 interface RoleOption {
   label: string;
   value: TUserRole;
-};
+}
 
 const roleOptions: RoleOption[] = [
   { label: "Администратор", value: 'admin' },
