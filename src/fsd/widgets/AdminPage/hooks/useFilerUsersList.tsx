@@ -1,13 +1,10 @@
-import { IUser, Role } from "@/fsd/entities/AdminPage/types";
-import { useDeferredValue, useMemo, useState } from "react";
+import { Role } from "@/fsd/entities/AdminPage/types/types";
+import { useDeferredValue, useState } from "react";
 import { TitleWithSearch } from "../ui/TitleWithSearch/TitleWithSearch";
 import { TitleWithSelect } from "../ui/TitleWithSelect/TitleWithSelect";
+import { TUserRole } from "@/fsd/shared/network/users/types";
 
-interface IProps {
-  users: IUser[];
-}
-
-export const useFilerUsersList = ({ users }: IProps) => {
+export const useFilerUsersList = () => {
   const [searchNameText, setSearchNameText] = useState("");
   const [showNameInput, setShowNameInput] = useState(false);
   const [searchLoginText, setSearchLoginText] = useState("");
@@ -15,25 +12,7 @@ export const useFilerUsersList = ({ users }: IProps) => {
   const [showSelectRole, setShowSelectRole] = useState(false);
   const deferredSearchNameText = useDeferredValue(searchNameText);
   const deferredSearchLoginText = useDeferredValue(searchLoginText);
-  const [roleFilter, setRoleFilter] = useState<string | number | null>(null);
-
-  const filteredUsers = useMemo(() => {
-    return users.filter((u) => {
-      const matchName = deferredSearchNameText
-        ? u.fullName
-            .toLowerCase()
-            .includes(deferredSearchNameText.toLowerCase())
-        : true;
-
-      const matchLogin = deferredSearchLoginText
-        ? u.login.toLowerCase().includes(deferredSearchLoginText.toLowerCase())
-        : true;
-
-      const matchRole = roleFilter !== null ? u.role === roleFilter : true;
-
-      return matchName && matchLogin && matchRole;
-    });
-  }, [deferredSearchNameText, deferredSearchLoginText, roleFilter, users]);
+  const [roleFilter, setRoleFilter] = useState<TUserRole | null>(null);
 
   const fioTitle = (
     <TitleWithSearch
@@ -62,9 +41,9 @@ export const useFilerUsersList = ({ users }: IProps) => {
       setShowSelect={setShowSelectRole}
       title="Роль"
       options={[
-        { value: 0, label: Role.Admin },
-        { value: 1, label: Role.Dispatcher },
-        { value: 2, label: Role.Emergency },
+        { value: 'admin', label: Role.Admin },
+        { value: 'user', label: Role.Dispatcher },
+        { value: 'worker', label: Role.Emergency },
       ]}
     />
   );
@@ -73,9 +52,11 @@ export const useFilerUsersList = ({ users }: IProps) => {
     showNameInput,
     showLoginInput,
     showSelectRole,
-    filteredUsers,
     fioTitle,
     loginTitle,
     roleTitle,
+    deferredSearchNameText,
+    deferredSearchLoginText,
+    roleFilter,
   };
 };

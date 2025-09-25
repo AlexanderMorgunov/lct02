@@ -3,16 +3,17 @@
 import { Select } from "antd";
 import { DownOutlined, CloseOutlined } from "@ant-design/icons";
 import { cn } from "@/fsd/shared/utils/cn/cn";
-import { useState } from "react";
+import { TUserRole } from "@/fsd/shared/network/users/types";
+import {Role} from "@/fsd/entities/AdminPage";
 
 interface Option {
-  label: string;
-  value: string | number;
+  label: Role;
+  value: TUserRole;
 }
 
 interface IProps {
-  value: string | number | null;
-  setValue: (value: string | number | null) => void;
+  value: TUserRole | null;
+  setValue: (value: TUserRole | null) => void;
   title: string;
   options: Option[];
   className?: string;

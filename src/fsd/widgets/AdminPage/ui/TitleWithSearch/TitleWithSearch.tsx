@@ -3,7 +3,8 @@
 import { Input } from "antd";
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import { cn } from "@/fsd/shared/utils/cn/cn";
-import { useEffect, useState, useDeferredValue } from "react";
+import { useEffect, useState } from "react";
+import useDebounce from "@/fsd/shared/hooks/useDebounce";
 
 interface IProps {
   showInput: boolean;
@@ -26,7 +27,7 @@ export const TitleWithSearch = ({
 }: IProps) => {
   const [localValue, setLocalValue] = useState(value);
 
-  const deferredValue = useDeferredValue(localValue);
+  const [ deferredValue ] = useDebounce(localValue, 600);
 
   useEffect(() => {
     setValue(deferredValue);
