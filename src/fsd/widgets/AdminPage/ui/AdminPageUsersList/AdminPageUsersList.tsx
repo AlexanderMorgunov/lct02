@@ -77,7 +77,7 @@ export const AdminPageUsersList = () => {
   const queryClient = useQueryClient();
   const { message } = App.useApp();
 
-  const { data, isLoading } = useGetUsers(queryKey, params);
+  const { data, isFetching } = useGetUsers(queryKey, params);
   const { mutate: createUser } = useCreateUser();
   const { mutate: deleteUser } = useDeleteUser();
   const { mutate: editUser } = useEditUser();
@@ -215,7 +215,7 @@ export const AdminPageUsersList = () => {
           columns={columns}
           dataSource={data?.users || []}
           rowKey={(record) => record.id}
-          loading={isLoading}
+          loading={isFetching}
           onChange={handleTableChange}
           pagination={{
             pageSize: PAGE_SIZE,
