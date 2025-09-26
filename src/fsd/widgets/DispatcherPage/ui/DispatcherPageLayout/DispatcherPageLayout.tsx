@@ -1,7 +1,7 @@
 "use client";
 import { PageLayout } from "@/fsd/features/PageLayout/ui/PageLayout";
 import { useGetNavItems } from "../../hooks/useGetNavItems";
-// import { navItems } from "../../model/navItems";
+import { Chat } from "@/fsd/features/Chat";
 
 interface AdminPageLayoutProps {
   children: React.ReactNode;
@@ -9,5 +9,12 @@ interface AdminPageLayoutProps {
 
 export const DispatcherPageLayout = ({ children }: AdminPageLayoutProps) => {
   const { navItems } = useGetNavItems();
-  return <PageLayout navItems={navItems}>{children}</PageLayout>;
+  return (
+    <>
+      <PageLayout className="h-screen" navItems={navItems}>
+        {children}
+      </PageLayout>
+      <Chat />
+    </>
+  );
 };

@@ -8,6 +8,10 @@ import "@ant-design/v5-patch-for-react-19";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { AvatarMenu } from "@/fsd/features/PageLayout/ui/AvatarMenu";
 import { useState } from "react";
+import { IconHelp } from "@/fsd/shared/ui/IconHelp";
+import Link from "next/link";
+import { ROUTES } from "@/fsd/shared/config/routes";
+import { cn } from "@/fsd/shared/utils/cn/cn";
 
 const { Header, Sider, Content } = Layout;
 
@@ -15,27 +19,31 @@ interface PageLayoutProps {
   children: React.ReactNode;
   navItems?: ItemType<MenuItemType>[];
   navChildren?: React.ReactNode;
+  className?: string;
 }
 
 export const PageLayout = ({
   children,
   navItems,
   navChildren,
+  className,
 }: PageLayoutProps) => {
   const { theme, toggleTheme } = useThemeStore();
   const defaultKey = ["Округа"];
   const [openKeys, setOpenKeys] = useState<string[]>(defaultKey);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Layout className="h-screen">
+    <Layout className={cn("h-screen", className)}>
       {/* Sidebar слева */}
       <Sider
         width={200}
         collapsible
         theme={theme}
         className="pt-12"
-        onCollapse={() => {
-          const newVal = !openKeys.length ? defaultKey : [];
+        onCollapse={(value) => {
+          setCollapsed(value);
+          const newVal = value ? [] : defaultKey;
           setOpenKeys(newVal);
         }}
       >
@@ -51,6 +59,17 @@ export const PageLayout = ({
             expandIcon={null}
           />
         ) : null}
+        <div className="absolute bottom-25 right-0 w-full">
+          <Link
+            href={ROUTES.DISPATCHER_HELP}
+            className="w-full flex items-center justify-center gap-2"
+          >
+            <IconHelp className="w-5 h-5  !text-danger" />
+            {!collapsed && (
+              <p className="text-sm font-medium text-primary-text">Помощь</p>
+            )}
+          </Link>
+        </div>
       </Sider>
 
       <Layout>

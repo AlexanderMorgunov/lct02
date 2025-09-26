@@ -1,7 +1,11 @@
 import { ICurrentUser } from "@/fsd/entities/Auth/types/types";
 import { $reqApi } from "../../axios";
 import { IGetCurrentUserResponse } from "../type";
-import {ILoginRequestData, ILoginResponse, ILoginResponseData} from "@/fsd/features/Login";
+import {
+  ILoginRequestData,
+  ILoginResponse,
+  ILoginResponseData,
+} from "@/fsd/features/Login";
 import { AxiosResponse } from "axios";
 import { cache } from "react";
 

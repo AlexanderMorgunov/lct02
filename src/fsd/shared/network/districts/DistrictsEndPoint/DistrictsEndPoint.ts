@@ -9,7 +9,7 @@ export default class DistrictsEndPoint {
     title,
   }: IGetDistrictsRequest): Promise<IDistrict[] | null> => {
     const { data } = await $reqApi.get<IGetDistrictsResponse>(
-      "/api/districts",
+      "/pipe/districts",
       {
         params: {
           page,
