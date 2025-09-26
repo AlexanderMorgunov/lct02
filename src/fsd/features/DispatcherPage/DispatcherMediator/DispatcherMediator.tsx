@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import { DispatcherScheme } from "@/fsd/widgets/DispatcherPage/ui/DispatcherScheme/DispatcherScheme";
 import { AnalyticsPage } from "@/fsd/pages/AnalyticsPage/AnalyticsPage";
+import { DispatcherForecast } from "@/fsd/pages/DispatcherForecast/DispatcherForecast";
 
 interface IDispatcherMediatorProps {
   location_id: string;
@@ -23,25 +24,31 @@ type ScreenKey =
   | "forecast"
   | "scheme";
 
-const screens = [
+type Screen = {
+  key: ScreenKey;
+  label: string;
+  icon: React.JSX.Element;
+};
+
+const screens: Screen[] = [
   {
-    key: "scheme" as ScreenKey,
+    key: "scheme",
     label: "Схема",
     icon: <ApartmentOutlined />,
   },
   {
-    key: "indications" as ScreenKey,
+    key: "indications",
     label: "Показания",
     icon: <DashboardOutlined />,
   },
-  { key: "accidents" as ScreenKey, label: "Аварии", icon: <AlertOutlined /> },
+  { key: "accidents", label: "Аварии", icon: <AlertOutlined /> },
   {
-    key: "analytics" as ScreenKey,
+    key: "analytics",
     label: "Аналитика",
     icon: <AreaChartOutlined />,
   },
   {
-    key: "forecast" as ScreenKey,
+    key: "forecast",
     label: "Прогноз",
     icon: <FundProjectionScreenOutlined />,
   },
@@ -71,7 +78,7 @@ export const DispatcherMediator = ({
         {active === "indications" && <div>Таблица с показаниями</div>}
         {active === "accidents" && <div>Таблица с происшествиями</div>}
         {active === "analytics" && <AnalyticsPage />}
-        {active === "forecast" && <div>Прогноз</div>}
+        {active === "forecast" && <DispatcherForecast />}
         {active === "scheme" && <DispatcherScheme location_id={location_id} />}
       </div>
     </div>

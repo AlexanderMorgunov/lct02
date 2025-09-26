@@ -9,7 +9,7 @@ export default class LocationsEndPoint {
     title,
   }: IGetLocationsRequest): Promise<ILocation[] | null> => {
     const { data } = await $reqApi.get<IGetLocationsResponse>(
-      "/api/locations",
+      "/pipe/locations",
       {
         params: {
           page,

@@ -2,6 +2,7 @@ import { IGetIndicationResponse } from "@/fsd/entities/Indication/types/type";
 import { useSocket } from "@/fsd/shared/hooks/useSocket";
 import { Spin } from "antd";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 export const useDispatcherScheme = (location_id: string) => {
   const indications = useSocket<IGetIndicationResponse>("indications", {
@@ -19,6 +20,10 @@ export const useDispatcherScheme = (location_id: string) => {
     updated_at,
     status,
   } = indications?.indications[0] || {};
+
+  useEffect(() => {
+    console.log(indications);
+  }, [indications]);
 
   const getTemp = (temp: number | undefined | null) => {
     if (temp) {
