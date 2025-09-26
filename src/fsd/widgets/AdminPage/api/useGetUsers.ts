@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { $api } from "@/fsd/shared/network/api";
 import { IGetUsers, IGetUsersRequestParams } from "@/fsd/shared/network/users/types";
 
@@ -11,6 +11,7 @@ export const useGetUsers = (qKeys: unknown[], params?: IGetUsersRequestParams) =
     },
     retry: false,
     staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData
   });
 }
