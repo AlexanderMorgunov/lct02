@@ -16,7 +16,8 @@ interface IProps {
   location_id: string;
 }
 export const DispatcherScheme = ({ location_id }: IProps) => {
-  const { counters, indicationInfo, status } = useDispatcherScheme(location_id);
+  const { counters, indicationInfoData, status, indicationInfo } =
+    useDispatcherScheme(location_id);
   const { theme } = useThemeStore();
   return (
     <div
@@ -45,6 +46,22 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
         </div>
       ))}
       <div className="absolute left-10 top-10 z-30 flex  text-start font-bold gap-5">
+        {indicationInfoData.map((info) => (
+          <Card
+            key={info.id}
+            title={`${info.title}:`}
+            className={cn(
+              "text-center",
+              !status ? "!text-hot" : "text-primary-text"
+            )}
+            variant="outlined"
+            size="small"
+          >
+            {info.text}
+          </Card>
+        ))}
+      </div>
+      <div className="absolute left-95 top-10 z-30 flex  text-start font-bold gap-5">
         {indicationInfo.map((info) => (
           <Card
             key={info.id}
