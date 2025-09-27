@@ -1,9 +1,6 @@
+"use client";
+import { IframeWithLoader } from "@/fsd/features/IframeWithLoader/IframeWithLoader";
+
 export const DispatcherForecast = () => {
-  return (
-    <iframe
-      src="https://waterpipe.streamlit.app/"
-      width="100%"
-      height="100%"
-    ></iframe>
-  );
+  return <IframeWithLoader src={process.env.NEXT_PUBLIC_FORECAST_URL || ""} />;
 };
