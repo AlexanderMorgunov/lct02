@@ -17,10 +17,7 @@ export const RegionsSelect = ({ regions, className }: IRegionSelectProps) => {
     <Select
       onChange={onChange}
       className={cn("min-w-52 bg-primary-bg", className)}
-      placeholder="Выберите округ"
-      getPopupContainer={(triggerNode) =>
-        (triggerNode?.parentElement as HTMLElement) ?? document.body
-      }
+      placeholder="Выберите район"
     >
       {regions?.map((region) => (
         <Select.Option key={region.id} value={region.id}>

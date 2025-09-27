@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { RegionsSelect } from "../RegionSelect/RegionSelect";
 import { useGetRegions } from "@/fsd/entities/Regions";
+import { ILocation } from "@/fsd/entities/locations/types/type";
 
 const mapOptions = {
   suppressMapOpenBlock: true, // скрывает блок "Как добраться" и "Такси"
@@ -17,10 +18,10 @@ const mapOptions = {
 };
 
 export const DispatcherMap = () => {
+  const router = useRouter();
   const { data: locations } = useGetLocations();
   const { data: regions } = useGetRegions();
 
-  const router = useRouter();
   const { coordinates } = useMapCoordinates();
 
   useEffect(() => {
@@ -36,6 +37,16 @@ export const DispatcherMap = () => {
     return () => document.removeEventListener("click", handler);
   }, [router]);
 
+  /// для тестов
+  const getChangeLocation = (locations: ILocation[] | null | undefined) => {
+    if (!locations) return [];
+    return locations.map((loc, i) => ({
+      ...loc,
+      lat: loc.lat + i * 0.0000001,
+      long: loc.long + i * 0.0001,
+    }));
+  };
+
   return (
     <div className="relative w-full h-full">
       <YMaps>
@@ -50,7 +61,7 @@ export const DispatcherMap = () => {
             height="100%"
             options={mapOptions}
           >
-            {locations?.map((loc) => (
+            {getChangeLocation(locations)?.map((loc) => (
               <Placemark
                 key={loc.id}
                 geometry={[loc.lat, loc.long]}
