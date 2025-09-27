@@ -3,7 +3,6 @@ import { Layout, Switch, Menu } from "antd";
 import { Theme } from "@/fsd/shared/config/theme/theme";
 import { IconLogo } from "@/fsd/shared/ui/IconLogo";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
-import { NotificationMenu } from "./NotificationMenu";
 import "@ant-design/v5-patch-for-react-19";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { AvatarMenu } from "@/fsd/features/PageLayout/ui/AvatarMenu";
@@ -12,6 +11,7 @@ import { IconHelp } from "@/fsd/shared/ui/IconHelp";
 import Link from "next/link";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { cn } from "@/fsd/shared/utils/cn/cn";
+import { useCurrentUser } from "@/fsd/entities/Auth/api/useCurrentUser";
 
 const { Header, Sider, Content } = Layout;
 
@@ -20,6 +20,8 @@ interface PageLayoutProps {
   navItems?: ItemType<MenuItemType>[];
   navChildren?: React.ReactNode;
   className?: string;
+  NotificationMenu?: React.ReactNode;
+  helpPageLink?: string;
 }
 
 export const PageLayout = ({
@@ -27,11 +29,14 @@ export const PageLayout = ({
   navItems,
   navChildren,
   className,
+  NotificationMenu,
+  helpPageLink,
 }: PageLayoutProps) => {
   const { theme, toggleTheme } = useThemeStore();
   const defaultKey = ["Округа"];
   const [openKeys, setOpenKeys] = useState<string[]>(defaultKey);
   const [collapsed, setCollapsed] = useState(false);
+  const { data: user } = useCurrentUser();
 
   return (
     <Layout className={cn("h-screen", className)}>
@@ -47,9 +52,8 @@ export const PageLayout = ({
           setOpenKeys(newVal);
         }}
       >
-        {navChildren ? (
-          navChildren
-        ) : navItems && navItems.length > 0 ? (
+        {navChildren && navChildren}
+        {navItems && navItems.length > 0 ? (
           <Menu
             mode="inline"
             theme={theme}
@@ -59,17 +63,19 @@ export const PageLayout = ({
             expandIcon={null}
           />
         ) : null}
-        <div className="absolute bottom-25 right-0 w-full">
-          <Link
-            href={ROUTES.DISPATCHER_HELP}
-            className="w-full flex items-center justify-center gap-2"
-          >
-            <IconHelp className="w-5 h-5  !text-danger" />
-            {!collapsed && (
-              <p className="text-sm font-medium text-primary-text">Помощь</p>
-            )}
-          </Link>
-        </div>
+        {helpPageLink && (
+          <div className="absolute bottom-25 right-0 w-full">
+            <Link
+              href={helpPageLink}
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <IconHelp className="w-5 h-5  !text-danger" />
+              {!collapsed && (
+                <p className="text-sm font-medium text-primary-text">Помощь</p>
+              )}
+            </Link>
+          </div>
+        )}
       </Sider>
 
       <Layout>
@@ -84,9 +90,12 @@ export const PageLayout = ({
 
           {/* Правая часть */}
           <div className="flex items-center gap-5">
-            <NotificationMenu />
+            {NotificationMenu && NotificationMenu}
 
-            <AvatarMenu />
+            <span className="flex items-center gap-2">
+              <AvatarMenu />
+              {user?.name}
+            </span>
 
             <Switch
               checkedChildren="🌙"

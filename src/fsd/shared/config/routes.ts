@@ -1,6 +1,6 @@
 export const ROUTES = {
   ADMIN: "/admin",
-  ADMIN_SETTINGS: "/admin/settings",
+  ADMIN_HELP: "/admin/help",
   LOGIN: "/authorization/login",
   DISPATCHER: "/dispatcher",
   DISPATCHER_HELP: "/dispatcher/help",
