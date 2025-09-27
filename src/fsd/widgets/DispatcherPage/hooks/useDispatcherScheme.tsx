@@ -1,12 +1,18 @@
-import { IGetIndicationResponse } from "@/fsd/entities/Indication/types/type";
+import { useGetIndications } from "@/fsd/entities/Indication/api/useGetIndications";
+import { IIndication } from "@/fsd/entities/Indication/types/type";
 import { useSocket } from "@/fsd/shared/hooks/useSocket";
 import { Spin } from "antd";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 
 export const useDispatcherScheme = (location_id: string) => {
-  const indications = useSocket<IGetIndicationResponse>("indications", {
-    location_id: location_id,
+  const initialIndication = useGetIndications({
+    location_id,
+    date_at: "2025-04-28",
+    time_of_day: "1",
+  });
+  const indication = useSocket<IIndication>({
+    event: `indication-${location_id}`,
+    initialData: initialIndication.data?.[0],
   });
 
   const {
@@ -19,14 +25,14 @@ export const useDispatcherScheme = (location_id: string) => {
     cold_consumption,
     updated_at,
     status,
-  } = indications?.indications[0] || {};
-
-  useEffect(() => {
-    console.log(indications);
-  }, [indications]);
+    temperature, // температура ОВ
+    relativehumidity, // относительная влажность ОВ
+    precipitation, // давление ОВ
+    windspeed, // скорость ветра
+  } = indication || {};
 
   const getTemp = (temp: number | undefined | null) => {
-    if (temp) {
+    if (temp !== null && temp !== undefined) {
       return `${temp} °C`;
     } else {
       return <Spin size="small" />;
@@ -34,31 +40,51 @@ export const useDispatcherScheme = (location_id: string) => {
   };
 
   const getVolume = (volume: number | undefined | null) => {
-    if (volume) {
+    if (volume !== null && volume !== undefined) {
       return `${volume.toFixed(3)} м3`;
     } else {
       return <Spin size="small" />;
     }
   };
 
-  const indicationInfo = [
-    // date
+  const indicationInfoData = [
     {
       id: 0,
       title: "Дата",
       text: dayjs(updated_at).format("DD.MM.YYYY"),
     },
-    // time
     {
       id: 1,
       title: "Время",
       text: dayjs(updated_at).format("HH:mm:ss"),
     },
-    // status
     {
       id: 2,
       title: "Статус",
       text: status ? "Норма" : "Авария",
+    },
+  ];
+
+  const indicationInfo = [
+    {
+      id: 0,
+      title: "Тепретура ОВ",
+      text: getTemp(temperature),
+    },
+    {
+      id: 1,
+      title: "Относительная влажность",
+      text: `${relativehumidity} %`,
+    },
+    {
+      id: 2,
+      title: "Давление ОВ",
+      text: `${precipitation} мм рт. ст.`,
+    },
+    {
+      id: 3,
+      title: "Скорость ветра",
+      text: `${windspeed} м/с`,
     },
   ];
 
@@ -125,5 +151,5 @@ export const useDispatcherScheme = (location_id: string) => {
     },
   ];
 
-  return { indicationInfo, counters, status };
+  return { indicationInfoData, counters, status, indicationInfo };
 };

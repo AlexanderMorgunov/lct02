@@ -1,5 +1,5 @@
-export interface Iindication {
-  location_id: number;
+export interface IIndication {
+  location_id: string;
   date_at: string;
   time_of_day: number;
   hot_water_in: number;
@@ -14,8 +14,12 @@ export interface Iindication {
   updated_at: string;
   ratio: number;
   status: boolean;
+  temperature: number; // температура ОВ
+  relativehumidity: number; // относительная влажность ОВ
+  precipitation: number; // давление ОВ
+  windspeed: number; // скорость ветра
 }
 
 export interface IGetIndicationResponse {
-  indications: Iindication[];
+  indications: IIndication[];
 }

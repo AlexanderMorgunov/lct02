@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { socket } from "../network/socket";
 
-export const useSocket = <T = unknown>(
-  event: string,
-  params?: Record<string, unknown>
-) => {
+interface IUseSocket<T> {
+  event: string;
+  params?: Record<string, unknown>;
+  initialData?: T;
+}
+
+export const useSocket = <T = unknown>({
+  event,
+  params,
+  initialData,
+}: IUseSocket<T>) => {
   const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
@@ -25,5 +32,5 @@ export const useSocket = <T = unknown>(
     };
   }, [event, params]);
 
-  return data;
+  return data || initialData;
 };
