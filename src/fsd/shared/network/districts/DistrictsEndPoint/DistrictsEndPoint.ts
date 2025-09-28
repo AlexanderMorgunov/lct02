@@ -1,6 +1,10 @@
 import { $reqApi } from "../../axios";
-import { IGetDistrictsRequest, IGetDistrictsResponse } from "./type";
-import { IDistrict } from "@/fsd/entities/District/types/type";
+import {
+  IGetDistrictDetailResponse,
+  IGetDistrictsRequest,
+  IGetDistrictsResponse,
+} from "./type";
+import { IDistrict, IDistrictDetail } from "@/fsd/entities/District/types/type";
 
 export default class DistrictsEndPoint {
   static getDistricts = async ({
@@ -19,5 +23,14 @@ export default class DistrictsEndPoint {
       }
     );
     return data.status === "ok" ? data.data.districts : null;
+  };
+
+  static getDistrictDetail = async (
+    id: number
+  ): Promise<IDistrictDetail | null> => {
+    const { data } = await $reqApi.get<IGetDistrictDetailResponse>(
+      `/pipe/district/${id}`
+    );
+    return data.status === "ok" ? data.data : null;
   };
 }

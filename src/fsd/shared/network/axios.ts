@@ -6,6 +6,7 @@ export const $reqApi = axios.create({
   headers: {
     "Accept-Language": "ru",
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
   },
   withCredentials: true,
 });

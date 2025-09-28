@@ -1,4 +1,4 @@
-import { IDistrict } from "@/fsd/entities/District/types/type";
+import { IDistrict, IDistrictDetail } from "@/fsd/entities/District/types/type";
 import { IPagination } from "../../type";
 
 export interface IGetDistrictsRequest {
@@ -13,4 +13,9 @@ export interface IGetDistrictsResponse {
     districts: IDistrict[];
     pagination: IPagination;
   };
+}
+
+export interface IGetDistrictDetailResponse {
+  status: string;
+  data: IDistrictDetail;
 }

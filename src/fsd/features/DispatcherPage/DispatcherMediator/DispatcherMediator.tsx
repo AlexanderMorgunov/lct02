@@ -12,6 +12,7 @@ import {
 import { DispatcherScheme } from "@/fsd/widgets/DispatcherPage/ui/DispatcherScheme/DispatcherScheme";
 import { AnalyticsPage } from "@/fsd/pages/AnalyticsPage/AnalyticsPage";
 import { DispatcherForecast } from "@/fsd/pages/DispatcherForecast/DispatcherForecast";
+import { DispatcherAccidents } from "@/fsd/pages/DispatcherAccidents/DispatcherAccidents";
 
 interface IDispatcherMediatorProps {
   location_id: string;
@@ -76,7 +77,9 @@ export const DispatcherMediator = ({
 
       <div className="bg-card h-full z-30 w-full">
         {active === "indications" && <div>Таблица с показаниями</div>}
-        {active === "accidents" && <div>Таблица с происшествиями</div>}
+        {active === "accidents" && (
+          <DispatcherAccidents location_id={location_id} />
+        )}
         {active === "analytics" && <AnalyticsPage />}
         {active === "forecast" && <DispatcherForecast />}
         {active === "scheme" && <DispatcherScheme location_id={location_id} />}
