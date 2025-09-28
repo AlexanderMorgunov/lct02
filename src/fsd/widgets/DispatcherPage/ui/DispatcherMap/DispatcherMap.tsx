@@ -1,14 +1,9 @@
 "use client";
 
-import { useGetLocations } from "@/fsd/entities/locations/api/useGetLocations";
-import { ROUTES } from "@/fsd/shared/config/routes";
-import { useMapCoordinates } from "@/fsd/shared/store/mapCoordinates/useMapCoordinates";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { RegionsSelect } from "../RegionSelect/RegionSelect";
-import { useGetRegions } from "@/fsd/entities/Regions";
-import { ILocation } from "@/fsd/entities/locations/types/type";
+import { Form, Spin } from "antd";
+import { useDispatcherMap } from "../../hooks/useDispatcherMap";
 
 const mapOptions = {
   suppressMapOpenBlock: true, // скрывает блок "Как добраться" и "Такси"
@@ -18,50 +13,39 @@ const mapOptions = {
 };
 
 export const DispatcherMap = () => {
-  const router = useRouter();
-  const { data: locations } = useGetLocations();
-  const { data: regions } = useGetRegions();
-
-  const { coordinates } = useMapCoordinates();
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const handler = (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (target?.classList?.contains("balloon-link")) {
-        const id = target.getAttribute("data-id");
-        if (id) router.push(`${ROUTES.LOCATION}/${id}`);
-      }
-    };
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
-  }, [router]);
-
-  /// для тестов
-  const getChangeLocation = (locations: ILocation[] | null | undefined) => {
-    if (!locations) return [];
-    return locations.map((loc, i) => ({
-      ...loc,
-      lat: loc.lat + i * 0.0000001,
-      long: loc.long + i * 0.0001,
-    }));
-  };
-
+  const {
+    isLoadingMap,
+    activeDistrict,
+    setISLoadingMap,
+    getChangeLocation,
+    regionDetail,
+    form,
+    districtDetail,
+    handleSetActiveRegion,
+  } = useDispatcherMap();
   return (
     <div className="relative w-full h-full">
+      {isLoadingMap && (
+        <div className="absolute inset-0 flex w-full h-full items-center justify-center opacity-90 z-40">
+          <Spin size="large" fullscreen></Spin>
+        </div>
+      )}
       <YMaps>
         <div className="w-full h-full">
           <Map
-            defaultState={{ center: [55.75, 37.57], zoom: 9 }}
             state={{
-              center: [coordinates.lat, coordinates.long],
-              zoom: 12,
+              center: [
+                activeDistrict?.lat || 55.75,
+                activeDistrict?.long || 37.57,
+              ],
+              zoom: 15,
             }}
             width="100%"
             height="100%"
             options={mapOptions}
+            onLoad={() => setISLoadingMap(false)}
           >
-            {getChangeLocation(locations)?.map((loc) => (
+            {getChangeLocation(regionDetail?.locations)?.map((loc) => (
               <Placemark
                 key={loc.id}
                 geometry={[loc.lat, loc.long]}
@@ -87,10 +71,15 @@ export const DispatcherMap = () => {
       <div
         className="absolute top-5 left-5"
         style={{
-          zIndex: 999999 /* очень высокий, чтобы гарантированно над картой */,
+          zIndex: 30,
         }}
       >
-        <RegionsSelect regions={regions ?? []} />
+        <Form form={form}>
+          <RegionsSelect
+            regions={districtDetail?.regions ?? []}
+            handleSetValue={handleSetActiveRegion}
+          />
+        </Form>
       </div>
     </div>
   );

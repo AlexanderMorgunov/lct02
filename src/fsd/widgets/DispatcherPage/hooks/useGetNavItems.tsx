@@ -1,13 +1,13 @@
 import { useGetDistrict } from "@/fsd/entities/District/api/useGetDistrict";
 import { ROUTES } from "@/fsd/shared/config/routes";
-import { useMapCoordinates } from "@/fsd/shared/store/mapCoordinates/useMapCoordinates";
+import { useActiveDistrict } from "@/fsd/shared/store/mapCoordinates/useActiveDistrict";
 import { HomeOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import Link from "next/link";
 
 export const useGetNavItems = () => {
   const { data: districts, isLoading, error } = useGetDistrict();
-  const { setCoordinates } = useMapCoordinates();
+  const { setActiveDistrict } = useActiveDistrict();
 
   const navItems: ItemType<MenuItemType>[] = [
     {
@@ -24,7 +24,7 @@ export const useGetNavItems = () => {
         label: district.title,
         icon: <EnvironmentOutlined />,
         onClick: () => {
-          setCoordinates({ lat: district.lat, long: district.long });
+          setActiveDistrict(district);
         },
       })),
     },

@@ -1,3 +1,4 @@
+import Accidents from "./accidents/Accidents";
 import Auth from "./auth/auth";
 import Districts from "./districts/Districts";
 import Indications from "./indications/indications";
@@ -12,6 +13,7 @@ export default class Api {
   static districts = Districts;
   static users = Users;
   static indications = Indications;
+  static accidents = Accidents;
 }
 
 export const $api = Api;
