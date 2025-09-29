@@ -1,4 +1,5 @@
 import { useGetAccidents } from "@/fsd/entities/Accident/api/useGetAccidents";
+import { DispatcherAccidentsTable } from "@/fsd/widgets/DispatcherPage";
 import { useEffect } from "react";
 
 interface IProps {
@@ -15,5 +16,5 @@ export const DispatcherAccidents = ({ location_id }: IProps) => {
     console.log(data);
   }, [data]);
 
-  return <div>DispatcherAccidents</div>;
+  return <DispatcherAccidentsTable />;
 };

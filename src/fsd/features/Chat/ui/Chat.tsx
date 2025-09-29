@@ -30,7 +30,7 @@ export const Chat = () => {
         chatWindow: {
           showTitle: true,
           showAgentMessages: true,
-          title: "МосТруба - чат",
+          title: "AI-Капля",
           titleAvatarSrc: "/images/logo.svg",
           welcomeMessage: "Привет! Введите ваш вопрос",
           errorMessage: "Произошла ошибка",

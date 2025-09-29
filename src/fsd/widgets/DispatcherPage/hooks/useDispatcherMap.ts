@@ -12,17 +12,16 @@ export const useDispatcherMap = () => {
   const [form] = useForm();
 
   const { activeDistrict } = useActiveDistrict();
-  const { data: districtDetail } = useGetDistrictsDetail(
-    activeDistrict?.id || null
+  const { data: districtDetail, isLoading: isDistrictDetailLoading } =
+    useGetDistrictsDetail(activeDistrict?.id || null);
+  const [regionKey, setRegionKey] = useState(
+    districtDetail?.regions?.[0].id || null
   );
-  const initialActiveRegionIndex = districtDetail?.regions?.[0].id;
-  const [activeRegionIndex, setActiveRegionIndex] = useState<number | null>(
-    initialActiveRegionIndex || null
-  );
-  const { data: regionDetail } = useGetRegion(activeRegionIndex || 0);
 
-  const handleSetActiveRegion = (index: number) => {
-    setActiveRegionIndex(index);
+  const { data: regionDetail } = useGetRegion(regionKey);
+
+  const handleSetRegionID = (id: number) => {
+    setRegionKey(id);
   };
 
   const [isLoadingMap, setISLoadingMap] = useState(true);
@@ -51,9 +50,10 @@ export const useDispatcherMap = () => {
   };
 
   useEffect(() => {
-    form.resetFields();
-    setActiveRegionIndex(null);
-  }, [activeDistrict]);
+    if (!districtDetail?.regions?.[0].id || isDistrictDetailLoading) return;
+    form.setFieldsValue({ region_id: districtDetail?.regions?.[0].id });
+    handleSetRegionID(districtDetail?.regions?.[0].id);
+  }, [districtDetail, form, isDistrictDetailLoading]);
 
   return {
     isLoadingMap,
@@ -63,6 +63,6 @@ export const useDispatcherMap = () => {
     regionDetail,
     form,
     districtDetail,
-    handleSetActiveRegion,
+    handleSetRegionID,
   };
 };

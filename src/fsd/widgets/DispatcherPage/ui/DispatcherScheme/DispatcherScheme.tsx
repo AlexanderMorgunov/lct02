@@ -52,7 +52,7 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
             title={`${info.title}:`}
             className={cn(
               "text-center",
-              !status ? "!text-hot" : "text-primary-text"
+              status ? "!text-hot" : "text-primary-text"
             )}
             variant="outlined"
             size="small"
@@ -68,7 +68,7 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
             title={`${info.title}:`}
             className={cn(
               "text-center",
-              !status ? "!text-hot" : "text-primary-text"
+              status ? "!text-hot" : "text-primary-text"
             )}
             variant="outlined"
             size="small"

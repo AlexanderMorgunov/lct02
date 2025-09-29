@@ -1,5 +1,5 @@
 "use client";
-import { Layout, Switch, Menu } from "antd";
+import { Layout, Switch, Menu, Tooltip } from "antd";
 import { Theme } from "@/fsd/shared/config/theme/theme";
 import { IconLogo } from "@/fsd/shared/ui/IconLogo";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
@@ -9,7 +9,6 @@ import { AvatarMenu } from "@/fsd/features/PageLayout/ui/AvatarMenu";
 import { useState } from "react";
 import { IconHelp } from "@/fsd/shared/ui/IconHelp";
 import Link from "next/link";
-import { ROUTES } from "@/fsd/shared/config/routes";
 import { cn } from "@/fsd/shared/utils/cn/cn";
 import { useCurrentUser } from "@/fsd/entities/Auth/api/useCurrentUser";
 
@@ -52,7 +51,6 @@ export const PageLayout = ({
           setOpenKeys(newVal);
         }}
       >
-        {navChildren && navChildren}
         {navItems && navItems.length > 0 ? (
           <Menu
             mode="inline"
@@ -63,17 +61,26 @@ export const PageLayout = ({
             expandIcon={null}
           />
         ) : null}
+        {navChildren && navChildren}
         {helpPageLink && (
           <div className="absolute bottom-25 right-0 w-full">
-            <Link
-              href={helpPageLink}
-              className="w-full flex items-center justify-center gap-2"
+            <Tooltip
+              key="help"
+              title={collapsed ? "Помощь" : null}
+              placement={"rightTop"}
             >
-              <IconHelp className="w-5 h-5  !text-danger" />
-              {!collapsed && (
-                <p className="text-sm font-medium text-primary-text">Помощь</p>
-              )}
-            </Link>
+              <Link
+                href={helpPageLink}
+                className="w-full flex items-center justify-center gap-2"
+              >
+                <IconHelp className="w-5 h-5  !text-danger" />
+                {!collapsed && (
+                  <p className="text-sm font-medium text-primary-text">
+                    Помощь
+                  </p>
+                )}
+              </Link>
+            </Tooltip>
           </div>
         )}
       </Sider>
