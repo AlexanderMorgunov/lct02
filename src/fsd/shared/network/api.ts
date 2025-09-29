@@ -5,6 +5,7 @@ import Indications from "./indications/indications";
 import LocationsEndPoint from "./locations/LocationsEndPoint/LocationsEndPoint";
 import Regions from "./regions/Regions";
 import Users from "@/fsd/shared/network/users/users";
+import Assignments from "@/fsd/shared/network/assignments/assignments";
 
 export default class Api {
   static regions = Regions;
@@ -14,6 +15,7 @@ export default class Api {
   static users = Users;
   static indications = Indications;
   static accidents = Accidents;
+  static assignments = Assignments;
 }
 
 export const $api = Api;
