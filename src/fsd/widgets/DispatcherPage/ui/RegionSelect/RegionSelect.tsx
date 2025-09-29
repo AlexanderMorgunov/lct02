@@ -6,19 +6,17 @@ import React from "react";
 interface IRegionSelectProps {
   regions: IRegion[];
   className?: string;
-  handleSetValue: (index: number) => void;
+  handleSetRegionID: (id: number) => void;
 }
 
 export const RegionsSelect = ({
   regions,
   className,
-  handleSetValue,
+  handleSetRegionID,
 }: IRegionSelectProps) => {
   const onChange = (value: string) => {
-    handleSetValue(+value);
+    handleSetRegionID(+value);
   };
-
-  console.log(regions);
 
   return (
     <Form.Item name="region_id">

@@ -10,7 +10,7 @@ interface AdminPageLayoutProps {
 }
 
 export const DispatcherPageLayout = ({ children }: AdminPageLayoutProps) => {
-  const { navItems } = useGetNavItems();
+  const { navItems, districtsMenu } = useGetNavItems();
   return (
     <>
       <PageLayout
@@ -18,6 +18,7 @@ export const DispatcherPageLayout = ({ children }: AdminPageLayoutProps) => {
         navItems={navItems}
         NotificationMenu={<NotificationMenu />}
         helpPageLink={ROUTES.DISPATCHER_HELP}
+        navChildren={districtsMenu}
       >
         {children}
       </PageLayout>

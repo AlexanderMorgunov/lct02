@@ -42,7 +42,7 @@ export const texts = [
   {
     title: (
       <div className="p-1 border border-gray rounded-2xl text-sm">
-        Потребление накопительныым итогом
+        Потребление накопительным итогом
       </div>
     ),
     className: "bottom-[300px] left-[275px] text-hot w-28 text-xl",
