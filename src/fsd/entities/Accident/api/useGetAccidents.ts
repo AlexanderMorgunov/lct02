@@ -10,7 +10,7 @@ export const useGetAccidents = (props: IGetAccidentsRequest) => {
       const accidents = await $api.accidents.AccidentsEndPoint.getAccidents(
         props
       );
-      return accidents || null;
+      return accidents;
     },
     retry: false,
     staleTime: 5 * 60 * 1000,

@@ -3,7 +3,6 @@ import { IIndication } from "@/fsd/entities/Indication/types/type";
 import { useSocket } from "@/fsd/shared/hooks/useSocket";
 import { Spin } from "antd";
 import dayjs from "dayjs";
-import { useEffect } from "react";
 
 export const useDispatcherScheme = (location_id: string) => {
   const initialIndication = useGetIndications({
@@ -95,7 +94,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 0,
       value: getVolume(cold_water_in),
-      className: "bottom-[220px] left-[114px]",
+      className: "bottom-[190px] left-[112px]",
       isHot: false,
       title: "ХВС",
     },
@@ -103,8 +102,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 1,
       value: getTemp(temp_hot_water_in),
-      // className: "bottom-[365px] right-[560px]",
-      className: "bottom-[360px] right-[537px]",
+      className: "bottom-[332px] right-[537px]",
       isHot: true,
       title: "Т1 ГВС, °С",
     },
@@ -112,7 +110,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 2,
       value: getVolume(hot_water_out),
-      className: "bottom-[295px] left-[122px]",
+      className: "bottom-[266px] left-[122px]",
       isHot: true,
       title: "Обратка ГВС",
     },
@@ -120,8 +118,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 3,
       value: getVolume(hot_water_in),
-      // className: "bottom-[430px] left-[140px]",
-      className: "bottom-[390px] left-[122px]",
+      className: "bottom-[360px] left-[122px]",
       isHot: true,
       title: "Подача ГВС",
     },
@@ -129,7 +126,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 4,
       value: getVolume(cold_consumption),
-      className: "bottom-[220px] left-[305px]",
+      className: "bottom-[190px] left-[305px]",
       isHot: false,
       title: "Потребление накопительным итогом",
     },
@@ -137,7 +134,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 5,
       value: getTemp(temp_hot_water_out),
-      className: "bottom-[360px] left-[565px]",
+      className: "bottom-[329px] left-[562px]",
       isHot: true,
       title: "Т2 ГВС, °С",
     },
@@ -145,7 +142,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 6,
       value: getVolume(hot_consumption),
-      className: "bottom-[320px] right-[530px]",
+      className: "bottom-[288px] right-[530px]",
       isHot: true,
       title: "Потребление ГВС, м3",
       pointClassName: "mt-[-67px]",

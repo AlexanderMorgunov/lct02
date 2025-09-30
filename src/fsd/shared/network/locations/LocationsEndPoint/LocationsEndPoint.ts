@@ -1,6 +1,10 @@
 import { $reqApi } from "../../axios";
 import { ILocation } from "@/fsd/entities/locations/types/type";
-import { IGetLocationsRequest, IGetLocationsResponse } from "./type";
+import {
+  IGetLocationResponse,
+  IGetLocationsRequest,
+  IGetLocationsResponse,
+} from "./type";
 
 export default class LocationsEndPoint {
   static getObjects = async ({
@@ -19,5 +23,11 @@ export default class LocationsEndPoint {
       }
     );
     return data.status === "ok" ? data.data.locations : null;
+  };
+  static getObject = async (id: number): Promise<ILocation | null> => {
+    const { data } = await $reqApi.get<IGetLocationResponse>(
+      `/pipe/location/${id}`
+    );
+    return data.status === "ok" ? data.data : null;
   };
 }
