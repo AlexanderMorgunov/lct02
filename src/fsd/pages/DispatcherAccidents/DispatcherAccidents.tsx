@@ -1,20 +1,15 @@
 import { useGetAccidents } from "@/fsd/entities/Accident/api/useGetAccidents";
 import { DispatcherAccidentsTable } from "@/fsd/widgets/DispatcherPage";
-import { useEffect } from "react";
-
 interface IProps {
   location_id: string;
 }
 
 export const DispatcherAccidents = ({ location_id }: IProps) => {
-  const { data, isLoading, error } = useGetAccidents({
-    location_id,
-    status: false,
+  const { data } = useGetAccidents({
+    location_id: "1", // todo - заменить.Написано временно пока на беке нет данных
+    // location_id,
+    status: true,
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  return <DispatcherAccidentsTable />;
+  return <DispatcherAccidentsTable accidents={data ?? []} />;
 };
