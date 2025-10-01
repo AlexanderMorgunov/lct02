@@ -21,7 +21,8 @@ export const DispatcherMap = () => {
     regionDetail,
     form,
     districtDetail,
-    handleSetActiveRegion,
+    handleSetRegionID,
+    // handleSetActiveRegion,
   } = useDispatcherMap();
   return (
     <div className="relative w-full h-full">
@@ -77,7 +78,7 @@ export const DispatcherMap = () => {
         <Form form={form}>
           <RegionsSelect
             regions={districtDetail?.regions ?? []}
-            handleSetValue={handleSetActiveRegion}
+            handleSetRegionID={handleSetRegionID}
           />
         </Form>
       </div>

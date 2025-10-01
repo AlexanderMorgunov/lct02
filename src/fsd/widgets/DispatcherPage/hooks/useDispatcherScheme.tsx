@@ -23,12 +23,13 @@ export const useDispatcherScheme = (location_id: string) => {
     temp_hot_water_out,
     cold_water_in,
     cold_consumption,
-    updated_at,
     status,
     temperature, // температура ОВ
     relativehumidity, // относительная влажность ОВ
     precipitation, // давление ОВ
     windspeed, // скорость ветра
+    time_of_day,
+    date_at,
   } = indication || {};
 
   const getTemp = (temp: number | undefined | null) => {
@@ -51,17 +52,17 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 0,
       title: "Дата",
-      text: dayjs(updated_at).format("DD.MM.YYYY"),
+      text: dayjs(date_at).format("DD.MM.YYYY"),
     },
     {
       id: 1,
       title: "Время",
-      text: dayjs(updated_at).format("HH:mm:ss"),
+      text: time_of_day,
     },
     {
       id: 2,
       title: "Статус",
-      text: status ? "Норма" : "Авария",
+      text: status ? "Аномалия" : "Нормально",
     },
   ];
 
@@ -93,7 +94,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 0,
       value: getVolume(cold_water_in),
-      className: "bottom-[220px] left-[114px]",
+      className: "bottom-[190px] left-[112px]",
       isHot: false,
       title: "ХВС",
     },
@@ -101,8 +102,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 1,
       value: getTemp(temp_hot_water_in),
-      // className: "bottom-[365px] right-[560px]",
-      className: "bottom-[360px] right-[537px]",
+      className: "bottom-[332px] right-[537px]",
       isHot: true,
       title: "Т1 ГВС, °С",
     },
@@ -110,7 +110,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 2,
       value: getVolume(hot_water_out),
-      className: "bottom-[295px] left-[122px]",
+      className: "bottom-[266px] left-[122px]",
       isHot: true,
       title: "Обратка ГВС",
     },
@@ -118,8 +118,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 3,
       value: getVolume(hot_water_in),
-      // className: "bottom-[430px] left-[140px]",
-      className: "bottom-[390px] left-[122px]",
+      className: "bottom-[360px] left-[122px]",
       isHot: true,
       title: "Подача ГВС",
     },
@@ -127,7 +126,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 4,
       value: getVolume(cold_consumption),
-      className: "bottom-[220px] left-[305px]",
+      className: "bottom-[190px] left-[305px]",
       isHot: false,
       title: "Потребление накопительным итогом",
     },
@@ -135,7 +134,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 5,
       value: getTemp(temp_hot_water_out),
-      className: "bottom-[247px] left-[559px]",
+      className: "bottom-[329px] left-[562px]",
       isHot: true,
       title: "Т2 ГВС, °С",
     },
@@ -143,7 +142,7 @@ export const useDispatcherScheme = (location_id: string) => {
     {
       id: 6,
       value: getVolume(hot_consumption),
-      className: "bottom-[320px] right-[530px]",
+      className: "bottom-[288px] right-[530px]",
       isHot: true,
       title: "Потребление ГВС, м3",
       pointClassName: "mt-[-67px]",

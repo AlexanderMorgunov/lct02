@@ -8,7 +8,7 @@ export const Chat = () => {
   return (
     <BubbleChat
       chatflowid={process.env.NEXT_PUBLIC_CHAT_ID}
-      apiHost={process.env.NEXT_PUBLIC_APP_BASE_URL}
+      apiHost={`https://${process.env.NEXT_PUBLIC_APP_BASE_URL}`}
       className="fixed bottom-5 right-5 z-50"
       position="bottom-right"
       theme={{
@@ -30,7 +30,7 @@ export const Chat = () => {
         chatWindow: {
           showTitle: true,
           showAgentMessages: true,
-          title: "МосТруба - чат",
+          title: "AI-Капля",
           titleAvatarSrc: "/images/logo.svg",
           welcomeMessage: "Привет! Введите ваш вопрос",
           errorMessage: "Произошла ошибка",

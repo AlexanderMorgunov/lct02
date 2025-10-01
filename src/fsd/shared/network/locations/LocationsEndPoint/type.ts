@@ -10,6 +10,11 @@ export interface IGetLocationsResponse {
   };
 }
 
+export interface IGetLocationResponse {
+  status: string;
+  data: ILocation;
+}
+
 export interface IGetLocationsRequest {
   page?: number;
   page_size?: number;
