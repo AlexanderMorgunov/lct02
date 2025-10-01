@@ -76,7 +76,7 @@ export const AssignTaskModal = ({
         </Form.Item>
 
         <Form.Item
-          label="Название задачи"
+          label="Задача для аварийной службы"
           name="task"
           rules={[{ required: true, message: "Введите комментарий" }]}
         >
