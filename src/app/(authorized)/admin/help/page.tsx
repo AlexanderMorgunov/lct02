@@ -1,5 +1,5 @@
-import { DispatcherHelpPage } from "@/fsd/pages/DispatcherHelpPage/DispatcherHelpPage";
+import { AdminHelpPage } from "@/fsd/pages/AdminHelpPage/AdminHelpPage";
 
 export default function Page() {
-  return <DispatcherHelpPage />;
+  return <AdminHelpPage />;
 }

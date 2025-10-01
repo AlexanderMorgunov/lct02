@@ -7,7 +7,7 @@ import { IAssignmentStatus, IGetAssignmentsRequestParams } from "@/fsd/shared/ne
 import { Card, Pagination, Select } from "antd";
 import { WorkerPageAssignmentCard } from "@/fsd/widgets/WorkerPage/ui/WorkerPageAssignmentCard/WorkerPageAssignmentCard";
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 5;
 
 const mockData = new Array(PAGE_SIZE).fill(0).map((_, i) => i + 1);
 
@@ -82,6 +82,7 @@ export const WorkerPageTodoList = () => {
             taskId={assignment.id}
             loading={isFetching}
             titleLocation={assignment.accident.location.title}
+            locationId={assignment.accident.location.id}
           />)))}
         {data && data.assignments.length === 0 && <p>Нет заданий</p>}
       </div>
