@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
-import { Tooltip } from "antd";
+import { Button, Tooltip } from "antd";
 import { cn } from "@/fsd/shared/utils/cn/cn";
 import { AnimatePoint } from "../AnimatePoint/AnimatePoint";
 import { texts } from "../../model/schemeTexts";
@@ -11,6 +11,8 @@ import { Card } from "antd";
 import { useDispatcherScheme } from "../../hooks/useDispatcherScheme";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
 import { Theme } from "@/fsd/shared/config/theme/theme";
+import html2canvas from "html2canvas-pro";
+import { DownloadOutlined } from "@ant-design/icons";
 
 interface IProps {
   location_id: string;
@@ -19,12 +21,36 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
   const { counters, indicationInfoData, status, indicationInfo } =
     useDispatcherScheme(location_id);
   const { theme } = useThemeStore();
+  const schemeRef = useRef<HTMLDivElement>(null);
+
+  const handleScreenShotScheme = async () => {
+    if (!schemeRef.current) return;
+
+    try {
+      const canvas = await html2canvas(schemeRef.current, {
+        backgroundColor: null, // прозрачный фон
+        scale: 2, // лучшее качество
+      });
+
+      const dataUrl = canvas.toDataURL("image/png");
+
+      // Создаем ссылку для скачивания
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `scheme_${location_id}_${new Date().toISOString()}.png`;
+      link.click();
+    } catch (err) {
+      console.error("Ошибка при создании скриншота:", err);
+    }
+  };
+
   return (
     <div
       className={cn(
-        "flex justify-center h-full relative bg-white rounded-2xl  w-[1680px] shrink-0",
+        "h-full relative bg-white rounded-2xl  w-[1680px] shrink-0 flex",
         theme === Theme.DARK && "brightness-90"
       )}
+      ref={schemeRef}
     >
       {/* Схема */}
       <Image
@@ -105,6 +131,14 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
           </div>
         </Tooltip>
       ))}
+      <Button
+        type="primary"
+        onClick={handleScreenShotScheme}
+        className="absolute bottom-10 left-10 z-30 self-end gap-2"
+      >
+        Сохранить схему
+        <DownloadOutlined className="text-lg" />
+      </Button>
     </div>
   );
 };
