@@ -1,8 +1,10 @@
 import { IPagination } from "@/fsd/shared/network/type";
+import { IAccident } from "@/fsd/entities/Accident/types/type";
 
-export type IAssignmentStatus  = 'Назначено' | 'В работе' | 'Выполнено';
+export type IAssignmentStatus  = 'assigned' | 'progress' | 'completed';
 
 export interface IAssignment {
+  accident: IAccident;
   accident_id: number;
   user_id: number;
   date_at: string;
@@ -31,4 +33,14 @@ export interface IGetAssignmentsRequestParams {
   user_id?: number;
   date_at?: string;
   status?: IAssignmentStatus;
+}
+
+export interface IUpdateAssignmentRequestBody {
+  status: IAssignmentStatus;
+  comment: string;
+}
+
+export interface IUpdateAssignmentResponse {
+  status: string;
+  data: IAssignment
 }
