@@ -18,6 +18,7 @@ interface Props {
   taskId: number;
   titleLocation: string;
   loading?: boolean;
+  locationId: number
 }
 
 const tagColors: Record<IAssignmentStatus, "success" | "default" | PresetColorType | "processing" | "error" | "warning"> = {
@@ -33,7 +34,7 @@ const btnText: Record<IAssignmentStatus, string> = {
 }
 
 export const WorkerPageAssignmentCard = (props: Props) => {
-  const { task, status, deadline, taskId, loading = false, titleLocation } = props;
+  const { task, status, deadline, taskId, loading = false, titleLocation, locationId } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
@@ -88,7 +89,7 @@ export const WorkerPageAssignmentCard = (props: Props) => {
             <p><span className={'font-bold text-base'}>Локация:</span> {titleLocation}</p>
           </div>
           <div>
-            <Link href={'#'} >
+            <Link href={`/worker/location/${locationId}`} >
               На карту
             </Link>
           </div>

@@ -5,6 +5,7 @@ export const ROUTES = {
   DISPATCHER: "/dispatcher",
   DISPATCHER_HELP: "/dispatcher/help",
   WORKER: "/worker",
+  WORKER_HELP: "/worker/help",
   REDIRECT: "/redirect",
   LOCATION: "/dispatcher/location",
 } as const;
