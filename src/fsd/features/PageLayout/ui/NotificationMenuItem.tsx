@@ -1,28 +1,37 @@
 import { Button, List } from "antd";
 import React from "react";
 import { CloseOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import Link from "next/link";
+import { ROUTES } from "@/fsd/shared/config/routes";
 
 interface INotificationMenuItem {
-  id: number;
+  id: string;
   text: string;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: string) => void;
+  location_id: number;
 }
 
 const NotificationMenuItem = ({
   id,
   text,
   handleDelete,
+  location_id,
 }: INotificationMenuItem) => {
   return (
     <List.Item
       key={id}
-      className="cursor-pointer text-sm rounded-md px-2 hover:opacity-70"
+      className="cursor-pointer text-sm rounded-md  hover:bg-primary-bg !px-1"
     >
       <div className="flex items-center justify-between w-full">
         {/* Иконка слева */}
         <div className="flex items-center gap-4">
-          <InfoCircleOutlined />
-          <span>{text}</span>
+          <Link
+            href={`${ROUTES.LOCATION}/${location_id}`}
+            className="flex gap-4 text-primary-text"
+          >
+            <InfoCircleOutlined />
+            <span>{text}</span>
+          </Link>
         </div>
 
         {/* Кнопка удаления */}

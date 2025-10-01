@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Radio } from "antd";
 import {
-  AreaChartOutlined,
   AlertOutlined,
   DashboardOutlined,
   FundProjectionScreenOutlined,
@@ -46,13 +45,8 @@ const screens: Screen[] = [
   },
   { key: "accidents", label: "Аварии", icon: <AlertOutlined /> },
   {
-    key: "analytics",
-    label: "Аналитика",
-    icon: <AreaChartOutlined />,
-  },
-  {
     key: "forecast",
-    label: "Стат-модель",
+    label: "Прогноз",
     icon: <FundProjectionScreenOutlined />,
   },
 ];
