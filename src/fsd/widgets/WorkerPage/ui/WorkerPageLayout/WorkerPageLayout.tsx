@@ -18,7 +18,7 @@ const navItems: ItemType<MenuItemType>[] = [
 
 export const WorkerPageLayout = ({ children }: AdminPageLayoutProps) => {
   return (
-    <PageLayout navItems={navItems} helpPageLink={ROUTES.REDIRECT}>
+    <PageLayout navItems={navItems} helpPageLink={ROUTES.WORKER_HELP}>
       {children}
     </PageLayout>
   );
