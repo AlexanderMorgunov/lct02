@@ -15,4 +15,6 @@ export interface IDispatcherNotifications {
   temperature: number;
   time_of_day: number;
   windspeed: number;
+  title: string;
+  row_id: number;
 }
