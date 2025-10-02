@@ -1,11 +1,21 @@
 import { $api } from "@/fsd/shared/network/api";
-import { IAccident } from "../types/type";
-import { IGetAccidentsRequest } from "@/fsd/shared/network/accidents/type";
-import { useQuery } from "@tanstack/react-query";
+import {
+  IAccidentWithPagination,
+  IGetAccidentsRequest,
+} from "@/fsd/shared/network/accidents/type";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export const useGetAccidents = (props: IGetAccidentsRequest) => {
-  return useQuery<IAccident[] | null>({
-    queryKey: ["getAccidents", props],
+  return useQuery<IAccidentWithPagination | null>({
+    queryKey: [
+      "getAccidents",
+      props.location_id,
+      props.is_task,
+      props.status,
+      props.page,
+      props.page_size,
+    ],
+    placeholderData: keepPreviousData,
     queryFn: async () => {
       const accidents = await $api.accidents.AccidentsEndPoint.getAccidents(
         props

@@ -1,6 +1,6 @@
 "use client";
 
-import { App, Button, message, Space, Table, Tag, Tooltip } from "antd";
+import { App, Button, message, Space, Spin, Table, Tag, Tooltip } from "antd";
 import type { TableProps } from "antd";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -14,14 +14,15 @@ import { ICreateAssignmentRequestBody } from "@/fsd/shared/network/assignments/t
 import { useQueryClient } from "@tanstack/react-query";
 import { useChangeAccidentStatus } from "@/fsd/entities/Accident/api/useChangeAccidentStatus";
 import { IndicationsModal } from "../IndicationsModal/IndicationsModal";
+import { useGetAccidents } from "@/fsd/entities/Accident/api/useGetAccidents";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 9;
 
 interface IProps {
-  accidents: IAccident[];
+  location_id: string;
 }
 
-export const DispatcherAccidentsTable = ({ accidents }: IProps) => {
+export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openCloseModal, setOpenCloseModal] = useState(false);
   const [openAssignModal, setOpenAssignModal] = useState(false);
@@ -33,6 +34,15 @@ export const DispatcherAccidentsTable = ({ accidents }: IProps) => {
   const { message } = App.useApp();
   const queryClient = useQueryClient();
   const { mutate: changeAccidentStatus } = useChangeAccidentStatus();
+  const { data, isLoading } = useGetAccidents({
+    location_id,
+    status: true,
+    page: currentPage,
+    page_size: PAGE_SIZE,
+    is_task: false,
+  });
+
+  const { accidents, pagination } = data || {};
 
   const handleCloseAccident = (accident: IAccident) => {
     setDeleteId(accident.id);
@@ -128,19 +138,23 @@ export const DispatcherAccidentsTable = ({ accidents }: IProps) => {
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={accidents}
-        rowKey={(record) => record.id}
-        pagination={{
-          pageSize: PAGE_SIZE,
-          current: currentPage,
-          total: accidents.length,
-          onChange: (page) => setCurrentPage(page),
-          showLessItems: true,
-        }}
-        className="bg-primary-bg text-primary-text"
-      />
+      {isLoading ? (
+        <Spin size="large" fullscreen />
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={accidents}
+          rowKey={(record) => record.id}
+          pagination={{
+            pageSize: PAGE_SIZE,
+            current: currentPage,
+            total: pagination?.count,
+            onChange: (page) => setCurrentPage(page),
+            showLessItems: true,
+          }}
+          className="bg-primary-bg text-primary-text"
+        />
+      )}
       {openCloseModal && (
         <CloseModal
           open={openCloseModal}
