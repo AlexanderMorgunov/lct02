@@ -21,6 +21,7 @@ export const NotificationMenu = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       const { location_id, date_at } = data;
       const title = `${date_at} Новое происшествие локация ${location_id}`;
       const id = getId(data);

@@ -1,6 +1,6 @@
-import { IAccident } from "@/fsd/entities/Accident/types/type";
 import { $reqApi } from "../../axios";
 import {
+  IAccidentWithPagination,
   IChangeAccidentStatusRequest,
   IChangeAccidentStatusResponse,
   IGetAccidentsRequest,
@@ -10,14 +10,14 @@ import {
 export default class AccidentsEndPoint {
   static getAccidents = async (
     props: IGetAccidentsRequest
-  ): Promise<IAccident[] | null> => {
+  ): Promise<IAccidentWithPagination | null> => {
     const { data } = await $reqApi.get<IGetAccidentsResponse>(
       "/pipe/accidents",
       {
         params: { ...props },
       }
     );
-    return data.status === "ok" ? data.data.accidents : null;
+    return data.status === "ok" ? data.data : null;
   };
 
   static changeAccidentStatus = async ({

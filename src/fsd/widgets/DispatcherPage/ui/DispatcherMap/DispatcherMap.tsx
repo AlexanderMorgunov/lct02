@@ -17,13 +17,12 @@ export const DispatcherMap = () => {
     isLoadingMap,
     activeDistrict,
     setISLoadingMap,
-    getChangeLocation,
     regionDetail,
     form,
     districtDetail,
     handleSetRegionID,
-    // handleSetActiveRegion,
   } = useDispatcherMap();
+
   return (
     <div className="relative w-full h-full">
       {isLoadingMap && (
@@ -39,14 +38,14 @@ export const DispatcherMap = () => {
                 activeDistrict?.lat || 55.75,
                 activeDistrict?.long || 37.57,
               ],
-              zoom: 15,
+              zoom: 10,
             }}
             width="100%"
             height="100%"
             options={mapOptions}
             onLoad={() => setISLoadingMap(false)}
           >
-            {getChangeLocation(regionDetail?.locations)?.map((loc) => (
+            {regionDetail?.locations?.map((loc) => (
               <Placemark
                 key={loc.id}
                 geometry={[loc.lat, loc.long]}

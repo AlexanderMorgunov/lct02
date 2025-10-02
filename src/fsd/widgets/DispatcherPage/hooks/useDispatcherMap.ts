@@ -39,16 +39,6 @@ export const useDispatcherMap = () => {
     return () => document.removeEventListener("click", handler);
   }, [router]);
 
-  /// изменение координат для теста
-  const getChangeLocation = (locations: ILocation[] | null | undefined) => {
-    if (!locations) return [];
-    return locations.map((loc, i) => ({
-      ...loc,
-      lat: loc.lat + i * 0.0000001,
-      long: loc.long + i * 0.0001,
-    }));
-  };
-
   useEffect(() => {
     if (!districtDetail?.regions?.[0].id || isDistrictDetailLoading) return;
     form.setFieldsValue({ region_id: districtDetail?.regions?.[0].id });
@@ -59,7 +49,6 @@ export const useDispatcherMap = () => {
     isLoadingMap,
     activeDistrict,
     setISLoadingMap,
-    getChangeLocation,
     regionDetail,
     form,
     districtDetail,
