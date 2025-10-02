@@ -38,7 +38,7 @@ export const DispatcherMap = () => {
                 activeDistrict?.lat || 55.75,
                 activeDistrict?.long || 37.57,
               ],
-              zoom: 10,
+              zoom: 8,
             }}
             width="100%"
             height="100%"

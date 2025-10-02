@@ -20,7 +20,6 @@ export const useGetAccidents = (props: IGetAccidentsRequest) => {
       const accidents = await $api.accidents.AccidentsEndPoint.getAccidents(
         props
       );
-      console.log(accidents);
       return accidents;
     },
     retry: false,
