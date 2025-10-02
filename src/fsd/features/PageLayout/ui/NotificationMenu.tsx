@@ -15,17 +15,11 @@ export const NotificationMenu = () => {
     event: "accident",
   });
 
-  const getId = (data: IDispatcherNotifications) => {
-    return `${data.location_id}-${data.date_at}-${data.time_of_day}`;
-  };
-
   useEffect(() => {
     if (data) {
       console.log(data);
-      const { location_id, date_at } = data;
-      const title = `${date_at} Новое происшествие локация ${location_id}`;
-      const id = getId(data);
-      addNotification({ id, location_id, title });
+      const { location_id, title } = data;
+      addNotification({ id: `${location_id}`, location_id, title });
     }
   }, [data, addNotification]);
 
