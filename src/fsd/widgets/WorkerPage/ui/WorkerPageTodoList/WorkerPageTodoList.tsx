@@ -54,16 +54,14 @@ export const WorkerPageTodoList = () => {
     <>
       <h2 className="text-2xl font-bold mb-10">Задачи</h2>
 
-      {!isFetching && data && data.assignments.length > 0 && (
-        <Select
-          value={status}
-          onChange={handleChangeStatus}
-          allowClear
-          options={statusOptions}
-          placeholder="Выберите статус"
-          className="w-[161px]"
-        />
-      )}
+      <Select
+        value={status}
+        onChange={handleChangeStatus}
+        allowClear
+        options={statusOptions}
+        placeholder="Выберите статус"
+        className="w-[161px]"
+      />
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4 min-h-[350px] mt-6">
         {!data && isFetching && (
