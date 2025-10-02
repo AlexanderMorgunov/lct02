@@ -1,6 +1,6 @@
 "use client";
 
-import { App, Button, message, Space, Table, Tag, Tooltip } from "antd";
+import { App, Button, message, Space, Spin, Table, Tag, Tooltip } from "antd";
 import type { TableProps } from "antd";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -34,7 +34,7 @@ export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
   const { message } = App.useApp();
   const queryClient = useQueryClient();
   const { mutate: changeAccidentStatus } = useChangeAccidentStatus();
-  const { data } = useGetAccidents({
+  const { data, isLoading } = useGetAccidents({
     location_id,
     status: true,
     page: currentPage,
@@ -138,19 +138,23 @@ export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={accidents}
-        rowKey={(record) => record.id}
-        pagination={{
-          pageSize: PAGE_SIZE,
-          current: currentPage,
-          total: pagination?.count,
-          onChange: (page) => setCurrentPage(page),
-          showLessItems: true,
-        }}
-        className="bg-primary-bg text-primary-text"
-      />
+      {isLoading ? (
+        <Spin size="large" fullscreen />
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={accidents}
+          rowKey={(record) => record.id}
+          pagination={{
+            pageSize: PAGE_SIZE,
+            current: currentPage,
+            total: pagination?.count,
+            onChange: (page) => setCurrentPage(page),
+            showLessItems: true,
+          }}
+          className="bg-primary-bg text-primary-text"
+        />
+      )}
       {openCloseModal && (
         <CloseModal
           open={openCloseModal}
