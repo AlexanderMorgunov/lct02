@@ -17,7 +17,6 @@ export const NotificationMenu = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       const { location_id, title } = data;
       addNotification({ id: `${location_id}`, location_id, title });
     }
