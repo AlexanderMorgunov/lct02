@@ -21,7 +21,7 @@ export const Login = () => {
             errors: [error?.response?.data?.message || "Нет доступа"],
           },
         ]);
-      }
+      },
     });
   };
 
@@ -38,6 +38,7 @@ export const Login = () => {
             },
           ]}
           normalize={(value) => value?.trim()}
+          initialValue={"user"}
         >
           <Input placeholder="Логин" />
         </Form.Item>
@@ -51,10 +52,16 @@ export const Login = () => {
             },
           ]}
           normalize={(value) => value?.trim()}
+          initialValue={"user"}
         >
           <Input.Password placeholder="Пароль" />
         </Form.Item>
-        <Button htmlType="submit" type="primary" className={"w-full"} disabled={isPending}>
+        <Button
+          htmlType="submit"
+          type="primary"
+          className={"w-full"}
+          disabled={isPending}
+        >
           Войти
         </Button>
       </Form>

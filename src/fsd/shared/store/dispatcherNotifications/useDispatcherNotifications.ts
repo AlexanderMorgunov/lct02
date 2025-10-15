@@ -17,7 +17,7 @@ interface IDispatcherNotificationsStore {
 }
 
 let debounceTimer: NodeJS.Timeout | null = null;
-const DEBOUNCE_DELAY = 300; // мс
+const DEBOUNCE_DELAY = 10; // мс
 const MAX_NOTIFICATIONS = 100;
 
 export const useDispatcherNotifications =
