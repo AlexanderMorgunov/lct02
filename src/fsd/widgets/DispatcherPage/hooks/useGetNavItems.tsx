@@ -25,9 +25,13 @@ export const useGetNavItems = () => {
 
   const navItems: ItemType<MenuItemType>[] = [
     {
-      key: "Домашняя",
+      key: ROUTES.DISPATCHER,
       icon: <HomeOutlined />,
       label: <Link href={ROUTES.DISPATCHER}>Домашняя</Link>,
+    },
+    {
+      key: ROUTES.DISPATCHER_ASSIGNMENTS,
+      label: <Link href={ROUTES.DISPATCHER_ASSIGNMENTS}>Задачи</Link>,
     },
   ];
 

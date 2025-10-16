@@ -21,6 +21,7 @@ interface PageLayoutProps {
   className?: string;
   NotificationMenu?: React.ReactNode;
   helpPageLink?: string;
+  defaultSelectedKeys?: string[];
 }
 
 export const PageLayout = ({
@@ -30,6 +31,7 @@ export const PageLayout = ({
   className,
   NotificationMenu,
   helpPageLink,
+  defaultSelectedKeys
 }: PageLayoutProps) => {
   const { theme, toggleTheme } = useThemeStore();
   const defaultKey = ["Округа"];
@@ -55,7 +57,7 @@ export const PageLayout = ({
           <Menu
             mode="inline"
             theme={theme}
-            defaultSelectedKeys={[navItems[0]?.key as string]}
+            defaultSelectedKeys={defaultSelectedKeys ?? [navItems[0]?.key as string]}
             items={navItems}
             openKeys={openKeys}
             expandIcon={null}
@@ -114,7 +116,7 @@ export const PageLayout = ({
         </Header>
 
         {/* Content */}
-        <Content className="p-5">{children}</Content>
+        <Content className="p-5 overflow-y-auto">{children}</Content>
       </Layout>
     </Layout>
   );
