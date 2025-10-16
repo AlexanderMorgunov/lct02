@@ -1,5 +1,6 @@
 import { IPagination } from "@/fsd/shared/network/type";
 import { IAccident } from "@/fsd/entities/Accident/types/type";
+import { IUser } from "@/fsd/shared/network/users/types";
 
 export type IAssignmentStatus  = 'assigned' | 'progress' | 'completed';
 
@@ -14,6 +15,7 @@ export interface IAssignment {
   updated_at: string;
   status: IAssignmentStatus;
   comment: string;
+  user: IUser
 }
 
 export type IGetAssignments = {

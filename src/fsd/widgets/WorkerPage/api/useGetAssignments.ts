@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { $api } from "@/fsd/shared/network/api";
 import type { IGetAssignments, IGetAssignmentsRequestParams } from "@/fsd/shared/network/assignments/types";
 
@@ -12,5 +12,6 @@ export const useGetAssignments = (qKeys: unknown[], params?: IGetAssignmentsRequ
     retry: false,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData
   });
 }

@@ -4,6 +4,7 @@ import { useGetNavItems } from "../../hooks/useGetNavItems";
 import { Chat } from "@/fsd/features/Chat";
 import { NotificationMenu } from "@/fsd/features/PageLayout/ui/NotificationMenu";
 import { ROUTES } from "@/fsd/shared/config/routes";
+import { usePathname } from "next/navigation";
 
 interface AdminPageLayoutProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface AdminPageLayoutProps {
 
 export const DispatcherPageLayout = ({ children }: AdminPageLayoutProps) => {
   const { navItems, districtsMenu } = useGetNavItems();
+  const pathname = usePathname();
   return (
     <>
       <PageLayout
@@ -19,6 +21,7 @@ export const DispatcherPageLayout = ({ children }: AdminPageLayoutProps) => {
         NotificationMenu={<NotificationMenu />}
         helpPageLink={ROUTES.DISPATCHER_HELP}
         navChildren={districtsMenu}
+        defaultSelectedKeys={[pathname]}
       >
         {children}
       </PageLayout>
