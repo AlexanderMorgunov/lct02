@@ -27,9 +27,10 @@ const roleLabels: Record<IUser["role"], Role> = {
   admin: Role.Admin,
   user: Role.Dispatcher,
   worker: Role.Emergency,
+  superadmin: Role.Superadmin
 };
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 5;
 const protectedUserLogins = ["admin", "user", "worker"];
 
 const isProtectedUser = (login: string) =>

@@ -1,4 +1,4 @@
-export type TUserRole = 'admin' | 'user' | 'worker';
+export type TUserRole = 'admin' | 'user' | 'worker' | 'superadmin';
 
 export interface IUser {
   name: string;

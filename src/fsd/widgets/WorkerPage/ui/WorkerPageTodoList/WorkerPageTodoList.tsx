@@ -31,7 +31,7 @@ export const WorkerPageTodoList = () => {
   const params: IGetAssignmentsRequestParams = {
     page: currentPage,
     page_size: PAGE_SIZE,
-    ...(currentUser ? {user_id: currentUser.id} : {}),
+    ...(currentUser && currentUser.role === "worker" ? {user_id: currentUser.id} : {}),
     ...(status ? {status} : {}),
   };
 
@@ -39,7 +39,7 @@ export const WorkerPageTodoList = () => {
   const queryKey = [
     "getAssignments",
     currentPage,
-    ...(currentUser ? [currentUser.id] : []),
+    ...(currentUser && currentUser.role === "worker" ? [currentUser.id] : []),
     ...(status ? [status] : []),
   ];
 

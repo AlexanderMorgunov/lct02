@@ -11,6 +11,8 @@ import { IconHelp } from "@/fsd/shared/ui/IconHelp";
 import Link from "next/link";
 import { cn } from "@/fsd/shared/utils/cn/cn";
 import { useCurrentUser } from "@/fsd/entities/Auth/api/useCurrentUser";
+import { ROUTES } from "@/fsd/shared/config/routes";
+import { usePathname } from "next/navigation";
 
 const { Header, Sider, Content } = Layout;
 
@@ -38,6 +40,13 @@ export const PageLayout = ({
   const [openKeys, setOpenKeys] = useState<string[]>(defaultKey);
   const [collapsed, setCollapsed] = useState(false);
   const { data: user } = useCurrentUser();
+  const pathname = usePathname();
+
+  const btnStyle = {
+    base: "flex items-center justify-center !transition-all duration-500 rounded-lg leading-tight px-5 py-[6px]",
+    active: `border border-[#007bff] !text-[#007bff] ${theme === Theme.DARK ? "!bg-[#141414]" : "!bg-white"}`,
+    inactive: "!text-white !bg-[#036cdc] hover:!bg-[#278ae8]",
+  }
 
   return (
     <Layout className={cn("h-screen", className)}>
@@ -63,6 +72,7 @@ export const PageLayout = ({
             items={navItems}
             openKeys={openKeys}
             expandIcon={null}
+            key={defaultSelectedKeys?.[0] ?? navItems[0]?.key}
           />
         ) : null}
         {navChildren && navChildren}
@@ -90,7 +100,7 @@ export const PageLayout = ({
       </Sider>
 
       <Layout>
-        <Header className="flex items-center justify-between px-5 text-card-foreground border-b border-border !bg-primary-bg">
+        <Header className="flex items-center justify-between px-5 text-card-foreground border-b border-border !bg-primary-bg gap-4">
           {/* Логотип */}
           <div className="flex flex-row items-center gap-4 text-2xl font-bold text-primary-text">
             <IconLogo className="w-8 h-8" /> МосТруба
@@ -99,8 +109,16 @@ export const PageLayout = ({
             </p>
           </div>
 
+          {user?.role === "superadmin" && (
+            <div className="flex items-center gap-5">
+              <Link className={cn(btnStyle.base, pathname.startsWith(ROUTES.ADMIN) ? btnStyle.active : btnStyle.inactive)} href={ROUTES.ADMIN}>Админ</Link>
+              <Link className={cn(btnStyle.base, pathname.startsWith(ROUTES.DISPATCHER) ? btnStyle.active : btnStyle.inactive)} href={ROUTES.DISPATCHER}>Диспетчер</Link>
+              <Link className={cn(btnStyle.base, pathname.startsWith(ROUTES.WORKER) ? btnStyle.active : btnStyle.inactive)} href={ROUTES.WORKER}>Аварийный</Link>
+            </div>
+          )}
+
           {/* Правая часть */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 shrink-0">
             {NotificationMenu && NotificationMenu}
 
             <span className="flex items-center gap-2">

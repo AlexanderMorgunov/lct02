@@ -38,7 +38,7 @@ export const Login = () => {
             },
           ]}
           normalize={(value) => value?.trim()}
-          initialValue={"user"}
+          initialValue={"superadmin"}
         >
           <Input placeholder="Логин" />
         </Form.Item>
@@ -52,7 +52,7 @@ export const Login = () => {
             },
           ]}
           normalize={(value) => value?.trim()}
-          initialValue={"user"}
+          initialValue={"superadmin"}
         >
           <Input.Password placeholder="Пароль" />
         </Form.Item>
