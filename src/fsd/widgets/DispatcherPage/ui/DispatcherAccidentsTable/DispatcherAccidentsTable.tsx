@@ -100,7 +100,7 @@ export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
       width: 80,
     },
     {
-      title: "Название аварии",
+      title: "Название аномалии",
       dataIndex: "title",
       key: "title",
       sorter: (a, b) => a.title.localeCompare(b.title),
