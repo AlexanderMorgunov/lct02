@@ -1,8 +1,8 @@
 "use client";
 
-import { App, Button, message, Space, Spin, Table, Tag, Tooltip } from "antd";
+import { App, Button, Space, Spin, Table, Tooltip } from "antd";
 import type { TableProps } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { CloseModal } from "../CloseModal/CloseModal";
 import { IAccident } from "@/fsd/entities/Accident/types/type";
@@ -24,6 +24,7 @@ interface IProps {
 
 export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+
   const [openCloseModal, setOpenCloseModal] = useState(false);
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [openIndicationsModal, setOpenIndicationsModal] = useState(false);
@@ -34,6 +35,12 @@ export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
   const { message } = App.useApp();
   const queryClient = useQueryClient();
   const { mutate: changeAccidentStatus } = useChangeAccidentStatus();
+
+  // Сброс на первую страницу при изменении location_id
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [location_id]);
+
   const { data, isLoading } = useGetAccidents({
     location_id,
     status: true,
@@ -150,7 +157,9 @@ export const DispatcherAccidentsTable = ({ location_id }: IProps) => {
             current: currentPage,
             total: pagination?.count,
             onChange: (page) => setCurrentPage(page),
+            showSizeChanger: false,
             showLessItems: true,
+            showTotal: (total, range) => `${range[0]}-${range[1]} из ${total}`,
           }}
           className="bg-primary-bg text-primary-text"
         />

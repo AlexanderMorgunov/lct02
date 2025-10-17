@@ -2,7 +2,13 @@ import { useGetDistrict } from "@/fsd/entities/District/api/useGetDistrict";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { useActiveDistrict } from "@/fsd/shared/store/mapCoordinates/useActiveDistrict";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
-import { HomeOutlined, EnvironmentOutlined, PushpinOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  EnvironmentOutlined,
+  PushpinOutlined,
+  AlertOutlined,
+  DashboardOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import Link from "next/link";
@@ -33,6 +39,16 @@ export const useGetNavItems = () => {
       key: ROUTES.DISPATCHER_ASSIGNMENTS,
       icon: <PushpinOutlined />,
       label: <Link href={ROUTES.DISPATCHER_ASSIGNMENTS}>Задачи</Link>,
+    },
+    {
+      key: ROUTES.DISPATCHER_ACCIDENTS,
+      icon: <AlertOutlined />,
+      label: <Link href={ROUTES.DISPATCHER_ACCIDENTS}>Аварии</Link>,
+    },
+    {
+      key: ROUTES.DISPATCHER_INDICATIONS,
+      icon: <DashboardOutlined />,
+      label: <Link href={ROUTES.DISPATCHER_INDICATIONS}>Показания</Link>,
     },
   ];
 

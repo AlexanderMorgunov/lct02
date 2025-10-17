@@ -5,6 +5,8 @@ export const ROUTES = {
   DISPATCHER: "/dispatcher",
   DISPATCHER_HELP: "/dispatcher/help",
   DISPATCHER_ASSIGNMENTS: "/dispatcher/assignments",
+  DISPATCHER_ACCIDENTS: "/dispatcher/accidents",
+  DISPATCHER_INDICATIONS: "/dispatcher/indications",
   WORKER: "/worker",
   WORKER_HELP: "/worker/help",
   REDIRECT: "/redirect",
