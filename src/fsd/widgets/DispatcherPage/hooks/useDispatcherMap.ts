@@ -32,7 +32,7 @@ export const useDispatcherMap = () => {
       const target = e.target as HTMLElement;
       if (target?.classList?.contains("balloon-link")) {
         const id = target.getAttribute("data-id");
-        if (id) router.push(`${ROUTES.LOCATION}/${id}`);
+        if (id) router.push(`${ROUTES.DISPATCHER_LOCATION}/${id}`);
       }
     };
     document.addEventListener("click", handler);

@@ -1,3 +1,4 @@
+"use client";
 import { Spin } from "antd";
 import { useState } from "react";
 

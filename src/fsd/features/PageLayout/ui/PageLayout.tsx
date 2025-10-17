@@ -33,7 +33,7 @@ export const PageLayout = ({
   className,
   NotificationMenu,
   helpPageLink,
-  defaultSelectedKeys
+  defaultSelectedKeys,
 }: PageLayoutProps) => {
   const { theme, toggleTheme } = useThemeStore();
   const defaultKey = ["Округа"];
@@ -66,7 +66,9 @@ export const PageLayout = ({
           <Menu
             mode="inline"
             theme={theme}
-            defaultSelectedKeys={defaultSelectedKeys ?? [navItems[0]?.key as string]}
+            defaultSelectedKeys={
+              defaultSelectedKeys ?? [navItems[0]?.key as string]
+            }
             items={navItems}
             openKeys={openKeys}
             expandIcon={null}
@@ -74,7 +76,7 @@ export const PageLayout = ({
         ) : null}
         {navChildren && navChildren}
         {helpPageLink && (
-          <div className="absolute bottom-25 right-0 w-full">
+          <div className="absolute bottom-15 right-0 w-full">
             <Tooltip
               key="help"
               title={collapsed ? "Помощь" : null}

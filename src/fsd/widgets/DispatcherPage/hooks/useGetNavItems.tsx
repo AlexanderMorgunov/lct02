@@ -1,8 +1,16 @@
 import { useGetDistrict } from "@/fsd/entities/District/api/useGetDistrict";
+import { useGetLocations } from "@/fsd/entities/locations/api/useGetLocations";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { useActiveDistrict } from "@/fsd/shared/store/mapCoordinates/useActiveDistrict";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
-import { HomeOutlined, EnvironmentOutlined, PushpinOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  EnvironmentOutlined,
+  PushpinOutlined,
+  AlertOutlined,
+  DashboardOutlined,
+  FundProjectionScreenOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import Link from "next/link";
@@ -15,6 +23,11 @@ export const useGetNavItems = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { theme } = useThemeStore();
+  const { data: locations, isLoading: isLoadingLocation } = useGetLocations({
+    page: 1,
+    page_size: 1,
+  });
+  const location = useMemo(() => locations?.[0], [locations]);
 
   useEffect(() => {
     if (!districts?.length) return;
@@ -34,6 +47,34 @@ export const useGetNavItems = () => {
       icon: <PushpinOutlined />,
       label: <Link href={ROUTES.DISPATCHER_ASSIGNMENTS}>Задачи</Link>,
     },
+    {
+      key: ROUTES.DISPATCHER_ACCIDENTS,
+      icon: <AlertOutlined />,
+      label: <Link href={ROUTES.DISPATCHER_ACCIDENTS}>Аномалии</Link>,
+    },
+    {
+      key: ROUTES.DISPATCHER_INDICATIONS,
+      icon: <DashboardOutlined />,
+      label: <Link href={ROUTES.DISPATCHER_INDICATIONS}>Показания</Link>,
+    },
+    {
+      key: ROUTES.DISPATCHER_FORECAST,
+      icon: <FundProjectionScreenOutlined />,
+      label: <Link href={ROUTES.DISPATCHER_FORECAST}>Прогноз</Link>,
+    },
+    ...(!isLoadingLocation && location
+      ? [
+          {
+            key: `${ROUTES.DISPATCHER_LOCATION}/${location.id}`,
+            icon: <FundProjectionScreenOutlined />,
+            label: (
+              <Link href={`${ROUTES.DISPATCHER_LOCATION}/${location.id}`}>
+                {location.title}
+              </Link>
+            ),
+          },
+        ]
+      : []),
   ];
 
   const districtsMenu = useMemo(

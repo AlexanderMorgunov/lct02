@@ -22,18 +22,18 @@ export const CloseModal = ({
     try {
       if (id !== null) {
         onConfirm({ id, status: false });
-        message.success(`Авария-${id} закрыта`);
+        message.success(`Аномалия-${id} закрыта`);
       }
     } catch (error) {
       console.log(error);
-      message.error("Ошибка закрытия аварии");
+      message.error("Ошибка закрытия");
     }
     onClose();
   };
   return (
     <Modal
       open={open}
-      title="Закрытие аварии"
+      title="Закрытие аномалии"
       okText="Закрыть"
       okType="danger"
       cancelText="Отмена"

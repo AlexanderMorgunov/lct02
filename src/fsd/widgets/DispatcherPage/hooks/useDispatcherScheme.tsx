@@ -150,5 +150,11 @@ export const useDispatcherScheme = (location_id: string) => {
     },
   ];
 
-  return { indicationInfoData, counters, status, indicationInfo };
+  return {
+    indicationInfoData,
+    counters,
+    status,
+    indicationInfo,
+    isLoading: initialIndication.isLoading,
+  };
 };

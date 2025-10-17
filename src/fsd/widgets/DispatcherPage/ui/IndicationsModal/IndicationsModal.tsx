@@ -85,7 +85,7 @@ export const IndicationsModal = ({
   return (
     <Modal
       open={open}
-      title="Показания при аварии"
+      title="Показания аномалии"
       onCancel={onClose}
       footer={null}
       width={600}

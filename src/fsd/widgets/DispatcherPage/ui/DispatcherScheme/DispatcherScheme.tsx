@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { Button, Tooltip } from "antd";
+import { Button, Spin, Tooltip } from "antd";
 import { cn } from "@/fsd/shared/utils/cn/cn";
 import { AnimatePoint } from "../AnimatePoint/AnimatePoint";
 import { texts } from "../../model/schemeTexts";
@@ -18,7 +18,7 @@ interface IProps {
   location_id: string;
 }
 export const DispatcherScheme = ({ location_id }: IProps) => {
-  const { counters, indicationInfoData, status, indicationInfo } =
+  const { counters, indicationInfoData, status, indicationInfo, isLoading } =
     useDispatcherScheme(location_id);
   const { theme } = useThemeStore();
   const schemeRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,7 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
         {indicationInfoData.map((info) => (
           <Card
             key={info.id}
-            title={`${info.title}:`}
+            title={isLoading ? <Spin /> : info.title}
             className={cn(
               "text-center",
               status ? "!text-hot" : "text-primary-text"
@@ -99,7 +99,7 @@ export const DispatcherScheme = ({ location_id }: IProps) => {
             variant="outlined"
             size="small"
           >
-            {info.text}
+            {isLoading ? <Spin /> : info.text}
           </Card>
         ))}
       </div>
