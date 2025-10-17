@@ -8,8 +8,8 @@ export const ROUTES = {
   DISPATCHER_ACCIDENTS: "/dispatcher/accidents",
   DISPATCHER_INDICATIONS: "/dispatcher/indications",
   DISPATCHER_FORECAST: "/dispatcher/forecast",
+  DISPATCHER_LOCATION: "/dispatcher/location",
   WORKER: "/worker",
   WORKER_HELP: "/worker/help",
   REDIRECT: "/redirect",
-  LOCATION: "/dispatcher/location",
 } as const;

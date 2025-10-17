@@ -26,7 +26,7 @@ const NotificationMenuItem = ({
         {/* Иконка слева */}
         <div className="flex items-center gap-4">
           <Link
-            href={`${ROUTES.LOCATION}/${location_id}`}
+            href={`${ROUTES.DISPATCHER_LOCATION}/${location_id}`}
             className="flex gap-4 text-primary-text"
           >
             <InfoCircleOutlined />
