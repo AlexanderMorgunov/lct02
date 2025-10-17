@@ -1,4 +1,5 @@
 import { useGetDistrict } from "@/fsd/entities/District/api/useGetDistrict";
+import { useGetLocations } from "@/fsd/entities/locations/api/useGetLocations";
 import { ROUTES } from "@/fsd/shared/config/routes";
 import { useActiveDistrict } from "@/fsd/shared/store/mapCoordinates/useActiveDistrict";
 import { useThemeStore } from "@/fsd/shared/store/theme/useThemeStore";
@@ -22,6 +23,11 @@ export const useGetNavItems = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { theme } = useThemeStore();
+  const { data: locations, isLoading: isLoadingLocation } = useGetLocations({
+    page: 1,
+    page_size: 1,
+  });
+  const location = useMemo(() => locations?.[0], [locations]);
 
   useEffect(() => {
     if (!districts?.length) return;
@@ -56,6 +62,19 @@ export const useGetNavItems = () => {
       icon: <FundProjectionScreenOutlined />,
       label: <Link href={ROUTES.DISPATCHER_FORECAST}>Прогноз</Link>,
     },
+    ...(!isLoadingLocation && location
+      ? [
+          {
+            key: `${ROUTES.DISPATCHER_LOCATION}/${location.id}`,
+            icon: <FundProjectionScreenOutlined />,
+            label: (
+              <Link href={`${ROUTES.DISPATCHER_LOCATION}/${location.id}`}>
+                {location.title}
+              </Link>
+            ),
+          },
+        ]
+      : []),
   ];
 
   const districtsMenu = useMemo(
