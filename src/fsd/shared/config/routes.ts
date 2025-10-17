@@ -7,6 +7,7 @@ export const ROUTES = {
   DISPATCHER_ASSIGNMENTS: "/dispatcher/assignments",
   DISPATCHER_ACCIDENTS: "/dispatcher/accidents",
   DISPATCHER_INDICATIONS: "/dispatcher/indications",
+  DISPATCHER_FORECAST: "/dispatcher/forecast",
   WORKER: "/worker",
   WORKER_HELP: "/worker/help",
   REDIRECT: "/redirect",

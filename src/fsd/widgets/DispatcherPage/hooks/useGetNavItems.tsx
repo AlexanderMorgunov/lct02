@@ -8,6 +8,7 @@ import {
   PushpinOutlined,
   AlertOutlined,
   DashboardOutlined,
+  FundProjectionScreenOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
@@ -43,12 +44,17 @@ export const useGetNavItems = () => {
     {
       key: ROUTES.DISPATCHER_ACCIDENTS,
       icon: <AlertOutlined />,
-      label: <Link href={ROUTES.DISPATCHER_ACCIDENTS}>Аварии</Link>,
+      label: <Link href={ROUTES.DISPATCHER_ACCIDENTS}>Аномалии</Link>,
     },
     {
       key: ROUTES.DISPATCHER_INDICATIONS,
       icon: <DashboardOutlined />,
       label: <Link href={ROUTES.DISPATCHER_INDICATIONS}>Показания</Link>,
+    },
+    {
+      key: ROUTES.DISPATCHER_FORECAST,
+      icon: <FundProjectionScreenOutlined />,
+      label: <Link href={ROUTES.DISPATCHER_FORECAST}>Прогноз</Link>,
     },
   ];
 

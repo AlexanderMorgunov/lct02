@@ -43,7 +43,7 @@ const screens: Screen[] = [
     label: "Показания",
     icon: <DashboardOutlined />,
   },
-  { key: "accidents", label: "Аварии", icon: <AlertOutlined /> },
+  { key: "accidents", label: "Аномалии", icon: <AlertOutlined /> },
   {
     key: "forecast",
     label: "Прогноз",
