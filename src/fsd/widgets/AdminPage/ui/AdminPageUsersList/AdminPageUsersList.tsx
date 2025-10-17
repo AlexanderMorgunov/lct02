@@ -2,7 +2,7 @@
 
 import { Table, Avatar, Button, Space, App, TableProps } from "antd";
 import { EditOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Role } from "@/fsd/entities/AdminPage";
 import { useFilerUsersList } from "../../hooks/useFilerUsersList";
 import { UserModal } from "../UserModal/UserModal";
@@ -19,6 +19,7 @@ import { useCreateUser } from "@/fsd/widgets/AdminPage/api/useCreateUser";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteUser } from "@/fsd/widgets/AdminPage/api/useDeleteUser";
 import { useEditUser } from "@/fsd/widgets/AdminPage/api/useEditUser";
+import { ProtectedUserButton } from "../ProtectedUserButton/ProtectedUserButton";
 
 type SortKeys = "name" | "login" | "role";
 
@@ -29,6 +30,10 @@ const roleLabels: Record<IUser["role"], Role> = {
 };
 
 const PAGE_SIZE = 3;
+const protectedUserLogins = ["admin", "user", "worker"];
+
+const isProtectedUser = (login: string) =>
+  protectedUserLogins.includes(login.toLowerCase());
 
 export const AdminPageUsersList = () => {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
@@ -50,7 +55,7 @@ export const AdminPageUsersList = () => {
     roleTitle,
     deferredSearchLoginText,
     deferredSearchNameText,
-    roleFilter
+    roleFilter,
   } = useFilerUsersList();
 
   const params: IGetUsersRequestParams = {
@@ -64,7 +69,7 @@ export const AdminPageUsersList = () => {
     ...(roleFilter ? { role: roleFilter } : {}),
   };
 
-// Генерируем queryKey для react-query
+  // Генерируем queryKey для react-query
   const queryKey = [
     "getUsers",
     currentPage,
@@ -86,7 +91,7 @@ export const AdminPageUsersList = () => {
     if (deferredSearchNameText || deferredSearchLoginText || roleFilter) {
       setCurrentPage(1);
     }
-  }, [deferredSearchNameText, deferredSearchLoginText, roleFilter])
+  }, [deferredSearchNameText, deferredSearchLoginText, roleFilter]);
 
   const handleTableChange: TableProps<IUser>["onChange"] = (_, __, sorter) => {
     if (!Array.isArray(sorter) && sorter?.field) {
@@ -117,13 +122,16 @@ export const AdminPageUsersList = () => {
   };
 
   const handleEditUser = (userId: number, user: IEditUserRequestBody) => {
-    editUser({ userId, body: user }, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ["getUsers"] });
-        setIsEditUserOpen(false);
-        setEditingUser(null);
-      },
-    });
+    editUser(
+      { userId, body: user },
+      {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: ["getUsers"] });
+          setIsEditUserOpen(false);
+          setEditingUser(null);
+        },
+      }
+    );
   };
 
   const handleDelete = (id: number) => {
@@ -133,7 +141,7 @@ export const AdminPageUsersList = () => {
         const total = (data?.pagination.count ?? 0) - 1;
         console.log(total);
         const lastPage = Math.ceil(total / PAGE_SIZE);
-        setCurrentPage((prev) => prev > lastPage ? lastPage : prev);
+        setCurrentPage((prev) => (prev > lastPage ? lastPage : prev));
         setDeleteModalOpen(false);
         setSelectedUser(null);
         message.success(`Пользователь id: ${id} удален`);
@@ -177,20 +185,28 @@ export const AdminPageUsersList = () => {
       key: "actions",
       render: (_: unknown, user: IUser) => (
         <Space size="middle">
-          <EditOutlined
-            className="cursor-pointer !text-success !text-success-hover"
+          <ProtectedUserButton
+            isProtected={isProtectedUser(user.login)}
             onClick={() => {
               setIsEditUserOpen(true);
               setEditingUser(user);
             }}
-          />
-          <DeleteOutlined
-            className="cursor-pointer !text-danger !tex-danger-hover"
+            message="Редактирование дефольтных пользователей запрещено"
+            placement="topRight"
+          >
+            <EditOutlined className="cursor-pointer !text-success !text-success-hover" />
+          </ProtectedUserButton>
+          <ProtectedUserButton
+            isProtected={isProtectedUser(user.login)}
             onClick={() => {
               setSelectedUser(user);
               setDeleteModalOpen(true);
             }}
-          />
+            message="Удаление дефольтных пользователей запрещено"
+            placement="topLeft"
+          >
+            <DeleteOutlined className="cursor-pointer !text-danger !tex-danger-hover" />
+          </ProtectedUserButton>
         </Space>
       ),
     },
