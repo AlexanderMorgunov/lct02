@@ -72,6 +72,7 @@ export const PageLayout = ({
             items={navItems}
             openKeys={openKeys}
             expandIcon={null}
+            key={defaultSelectedKeys?.[0] ?? navItems[0]?.key}
           />
         ) : null}
         {navChildren && navChildren}
