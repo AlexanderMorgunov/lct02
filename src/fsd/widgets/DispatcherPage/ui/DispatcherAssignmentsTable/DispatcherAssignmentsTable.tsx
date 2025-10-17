@@ -1,16 +1,15 @@
 'use client';
 
-import {Table, Tag} from "antd";
-import {IAssignmentStatus, IGetAssignmentsRequestParams} from "@/fsd/shared/network/assignments/types";
-import {useGetAssignments} from "@/fsd/widgets/WorkerPage/api/useGetAssignments";
-import {useState} from "react";
-import {assignmentStatus} from "@/fsd/shared/constants/constants";
-import {PresetColorType} from "antd/es/_util/colors";
-import {IAccident} from "@/fsd/entities/Accident/types/type";
-import {IUser} from "@/fsd/shared/network/users/types";
-import {Role} from "@/fsd/entities/AdminPage";
-import {TitleWithSelect} from "@/fsd/widgets/DispatcherPage/ui/TitleWithSelect/TitleWithSelect";
-import {AssignmentStatus} from "@/fsd/entities/Assignments";
+import { Table, Tag } from "antd";
+import { IAssignmentStatus, IGetAssignmentsRequestParams } from "@/fsd/shared/network/assignments/types";
+import { useGetAssignments } from "@/fsd/widgets/WorkerPage/api/useGetAssignments";
+import { useEffect, useState } from "react";
+import { assignmentStatus } from "@/fsd/shared/constants/constants";
+import { PresetColorType } from "antd/es/_util/colors";
+import { IAccident } from "@/fsd/entities/Accident/types/type";
+import { IUser } from "@/fsd/shared/network/users/types";
+import { TitleWithSelect } from "@/fsd/widgets/DispatcherPage/ui/TitleWithSelect/TitleWithSelect";
+import { AssignmentStatus } from "@/fsd/entities/Assignments";
 
 const PAGE_SIZE = 5;
 
@@ -27,13 +26,15 @@ export const DispatcherAssignmentsTable = () => {
 
   const params: IGetAssignmentsRequestParams = {
     page: currentPage,
-    page_size: PAGE_SIZE
+    page_size: PAGE_SIZE,
+    ...(statusFilter ? { status: statusFilter } : {})
   };
 
 // Генерируем queryKey для react-query
   const queryKey = [
     "getAssignments",
-    currentPage
+    currentPage,
+    ...(statusFilter ? [statusFilter] : []),
   ];
 
   const { data, isFetching } = useGetAssignments(queryKey, params);
@@ -53,46 +54,51 @@ export const DispatcherAssignmentsTable = () => {
     />
   );
 
+  useEffect(() => {
+    if (statusFilter) {
+      setCurrentPage(1);
+    }
+  }, [statusFilter])
+
   const columns = [
     {
       title: 'ID инцидента',
       dataIndex: "accident_id",
       key: "accident_id",
-      className: "w-[5rem]",
+      className: "w-[10rem]",
     },
     {
       title: 'Задача',
       dataIndex: "task",
       key: "task",
-      className: "w-[25rem]",
+      className: "w-[30rem]",
     },
     {
-      // title: 'Статус',
       title: statusTitle,
       dataIndex: "status",
       key: "status",
       render: (status: IAssignmentStatus) => <Tag color={tagColors[status]}>{assignmentStatus[status]}</Tag>,
-      className: "w-[8rem]",
+      className: "w-[15rem]",
     },
     {
       title: 'Локация',
       dataIndex: "accident",
       key: "accident",
       render: (accident: IAccident) => accident.location.title,
-      className: "w-[10rem]",
+      className: "w-[20rem]",
     },
     {
       title: 'Дедлайн',
       dataIndex: "date_at",
       key: "date_at",
-      className: "w-[5rem]",
+      className: "w-[10rem]",
     },
     {
       title: 'Работник',
       dataIndex: "user",
       key: "user",
       render: (user: IUser) => user.name,
-      className: "w-[10rem]",
+      className: "w-[15rem]",
     },
   ];
 
@@ -102,7 +108,6 @@ export const DispatcherAssignmentsTable = () => {
       dataSource={data?.assignments || []}
       rowKey={(record) => record.id}
       loading={isFetching}
-      // onChange={handleTableChange}
       pagination={{
         pageSize: PAGE_SIZE,
         total: data?.pagination.count,
