@@ -41,7 +41,7 @@ export const TitleWithSelect = ({
           value={value ?? undefined}
           onChange={(val) => setValue(val ?? null)}
           options={options}
-          className={cn("min-w-[8rem] w-full", selectClassName)}
+          className={cn("w-full", selectClassName)}
           placeholder="Все"
           onClick={(e) => e.stopPropagation()}
         />
