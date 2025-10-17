@@ -2,6 +2,7 @@ export enum Role {
   Admin = "Администратор",
   Dispatcher = "Диспетчер",
   Emergency = "Аварийная служба",
+  Superadmin = "Суперадмин",
 }
 export interface IUser {
   id: number;

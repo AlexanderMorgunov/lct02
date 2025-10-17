@@ -1,4 +1,4 @@
-export type Role = "admin" | "user" | "worker";
+export type Role = "admin" | "user" | "worker" | 'superadmin';
 
 export interface ICurrentUser {
   id: number;

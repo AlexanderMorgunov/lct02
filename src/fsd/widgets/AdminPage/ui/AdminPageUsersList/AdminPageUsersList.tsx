@@ -26,9 +26,10 @@ const roleLabels: Record<IUser["role"], Role> = {
   admin: Role.Admin,
   user: Role.Dispatcher,
   worker: Role.Emergency,
+  superadmin: Role.Superadmin
 };
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 5;
 
 export const AdminPageUsersList = () => {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);

@@ -10,6 +10,7 @@ const roleRedirects: Record<string, string> = {
   admin: ROUTES.ADMIN,
   user: ROUTES.DISPATCHER,
   worker: ROUTES.WORKER,
+  superadmin: ROUTES.DISPATCHER,
 };
 
 export const RoleCheckProvider = ({ children }: { children: React.ReactNode }) => {
@@ -20,11 +21,19 @@ export const RoleCheckProvider = ({ children }: { children: React.ReactNode }) =
 
   useLayoutEffect(() => {
     if (user) {
-      const redirectPath = roleRedirects[user.role];
-      if (!pathname.startsWith(redirectPath)) {
-        router.replace(redirectPath);
+      if (user.role === "superadmin") {
+        if (pathname === ROUTES.REDIRECT) {
+          router.replace(ROUTES.DISPATCHER);
+        } else {
+          setIsCorrectedRole(true);
+        }
       } else {
-        setIsCorrectedRole(true);
+        const redirectPath = roleRedirects[user.role];
+        if (!pathname.startsWith(redirectPath)) {
+          router.replace(redirectPath);
+        } else {
+          setIsCorrectedRole(true);
+        }
       }
     }
   }, [user, router, pathname]);
