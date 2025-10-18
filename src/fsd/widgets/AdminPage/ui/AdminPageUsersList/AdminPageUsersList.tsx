@@ -27,11 +27,11 @@ const roleLabels: Record<IUser["role"], Role> = {
   admin: Role.Admin,
   user: Role.Dispatcher,
   worker: Role.Emergency,
-  superadmin: Role.Superadmin
+  superadmin: Role.Superadmin,
 };
 
 const PAGE_SIZE = 5;
-const protectedUserLogins = ["admin", "user", "worker"];
+const protectedUserLogins = ["admin", "user", "worker", "superadmin"];
 
 const isProtectedUser = (login: string) =>
   protectedUserLogins.includes(login.toLowerCase());
