@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Рекомендательный сервис прогнозирования возникновения технологических ситуаций',
     start_url: '/',
     display: 'standalone',
-    orientation: 'landscape',
+    orientation: 'natural',
     background_color: '#001529',
     theme_color: '#001529',
     lang: 'ru-RU',
