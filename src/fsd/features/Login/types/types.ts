@@ -1,5 +1,3 @@
-import {ICurrentUser} from "@/fsd/entities/Auth/types/types";
-
 export interface ILoginResponseData {
   access_token: string;
 }
